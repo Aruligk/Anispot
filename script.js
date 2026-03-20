@@ -1,14 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
-  fetchAnime();
+  fetchTrending();
+  fetchTopRated();
 });
 
-async function fetchAnime() {
-  const container = document.getElementById("anime-container");
+async function fetchTrending() {
+  const container = document.getElementById("trending");
 
-  if (!container) {
-    console.error("Container not found!");
-    return;
+  try {
+    const res = await fetch("https://api.jikan.moe/v4/seasons/now");
+    const data = await res.json();
+
+    container.innerHTML = "";
+
+    data.data.slice(0, 10).forEach(anime => {
+      container.innerHTML += createCard(anime);
+    });
+
+  } catch (err) {
+    console.error(err);
   }
+}
+
+async function fetchTopRated() {
+  const container = document.getElementById("top-rated");
 
   try {
     const res = await fetch("https://api.jikan.moe/v4/top/anime");
@@ -16,20 +30,21 @@ async function fetchAnime() {
 
     container.innerHTML = "";
 
-    data.data.slice(0, 12).forEach(anime => {
-      const card = document.createElement("div");
-      card.classList.add("anime-card");
-
-      card.innerHTML = `
-        <img src="${anime.images.jpg.image_url}" />
-        <h3>${anime.title}</h3>
-        <p>⭐ ${anime.score || "N/A"}</p>
-      `;
-
-      container.appendChild(card);
+    data.data.slice(0, 10).forEach(anime => {
+      container.innerHTML += createCard(anime);
     });
 
-  } catch (error) {
-    console.error("Error fetching anime:", error);
+  } catch (err) {
+    console.error(err);
   }
+}
+
+function createCard(anime) {
+  return `
+    <div class="anime-card">
+      <img src="${anime.images.jpg.image_url}" alt="${anime.title}">
+      <h3>${anime.title}</h3>
+      <p>⭐ ${anime.score || "N/A"}</p>
+    </div>
+  `;
 }
