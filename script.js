@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", () => {
+  fetchAnime();
+});
+
 async function fetchAnime() {
   const container = document.getElementById("anime-container");
 
@@ -26,8 +30,6 @@ async function fetchAnime() {
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching anime:", error);
   }
 }
-
-fetchAnime();
