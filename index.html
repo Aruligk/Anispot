@@ -1391,15 +1391,703 @@ var CHAR_IMG={
   'Inuyasha':'https://cdn.myanimelist.net/images/characters/5/42905.jpg',
   'Kagome Higurashi':'https://cdn.myanimelist.net/images/characters/3/42906.jpg'
 };
+
+// ── Real cast data per anime (name, role, MAL char image, type) ──────────
+var ANIME_CAST_MAP={
+  'Naruto':[
+    {name:'Naruto Uzumaki',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/2/284121.jpg',type:'main',desc:'The hyperactive ninja who never gives up on his dream to become Hokage.'},
+    {name:'Sasuke Uchiha',role:'Rival',img:'https://cdn.myanimelist.net/images/characters/9/131317.jpg',type:'main',desc:'The last surviving Uchiha who seeks vengeance for his clan.'},
+    {name:'Sakura Haruno',role:'Teammate',img:'https://cdn.myanimelist.net/images/characters/3/131318.jpg',type:'main',desc:'A skilled medical ninja with monstrous strength.'},
+    {name:'Kakashi Hatake',role:'Sensei',img:'https://cdn.myanimelist.net/images/characters/7/131316.jpg',type:'support',desc:'The legendary Copy Ninja who reads adult manga in plain sight.'}
+  ],
+  'Naruto Shippuden':[
+    {name:'Naruto Uzumaki',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/2/284121.jpg',type:'main',desc:'Older Naruto harnessing the Nine-Tails power.'},
+    {name:'Sasuke Uchiha',role:'Rival',img:'https://cdn.myanimelist.net/images/characters/9/131317.jpg',type:'main',desc:'The avenger walking a dark path.'},
+    {name:'Kakashi Hatake',role:'Sensei',img:'https://cdn.myanimelist.net/images/characters/7/131316.jpg',type:'main',desc:'Revealed as one of the most powerful shinobi alive.'},
+    {name:'Pain',role:'Antagonist',img:'https://cdn.myanimelist.net/images/characters/7/131315.jpg',type:'support',desc:'Leader of Akatsuki whose philosophy challenges Naruto.'}
+  ],
+  'Bleach':[
+    {name:'Ichigo Kurosaki',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/7/384152.jpg',type:'main',desc:'A human who becomes a Soul Reaper to protect his loved ones.'},
+    {name:'Rukia Kuchiki',role:'Soul Reaper',img:'https://cdn.myanimelist.net/images/characters/10/75485.jpg',type:'main',desc:'The noble Soul Reaper who gives Ichigo his powers.'},
+    {name:'Orihime Inoue',role:'Healer',img:'https://cdn.myanimelist.net/images/characters/5/75487.jpg',type:'support',desc:'Kind-hearted girl with powerful healing abilities.'}
+  ],
+  'Bleach TYBW':[
+    {name:'Ichigo Kurosaki',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/7/384152.jpg',type:'main',desc:'Ichigo confronting the thousand-year blood war.'},
+    {name:'Rukia Kuchiki',role:'Soul Reaper',img:'https://cdn.myanimelist.net/images/characters/10/75485.jpg',type:'main',desc:'Now a captain, fighting to protect Soul Society.'},
+    {name:'Yhwach',role:'Antagonist',img:'https://cdn.myanimelist.net/images/characters/8/351264.jpg',type:'support',desc:'The Quincy King who declares war on Soul Society.'}
+  ],
+  'One Piece':[
+    {name:'Monkey D. Luffy',role:'Captain',img:'https://cdn.myanimelist.net/images/characters/9/310751.jpg',type:'main',desc:'The rubbery pirate king-to-be who never backs down.'},
+    {name:'Roronoa Zoro',role:'Swordsman',img:'https://cdn.myanimelist.net/images/characters/3/310752.jpg',type:'main',desc:'Three-sword style swordsman aiming to be the world\'s best.'},
+    {name:'Nami',role:'Navigator',img:'https://cdn.myanimelist.net/images/characters/10/310755.jpg',type:'main',desc:'Genius navigator with a love for maps and money.'},
+    {name:'Sanji',role:'Chef',img:'https://cdn.myanimelist.net/images/characters/5/310756.jpg',type:'main',desc:'Chivalrous cook whose kicks are deadlier than any sword.'}
+  ],
+  'Dragon Ball Z':[
+    {name:'Goku',role:'Saiyan Hero',img:'https://cdn.myanimelist.net/images/characters/3/206134.jpg',type:'main',desc:'The pure-hearted Saiyan whose power keeps growing.'},
+    {name:'Vegeta',role:'Saiyan Prince',img:'https://cdn.myanimelist.net/images/characters/11/206135.jpg',type:'main',desc:'The proud prince of all Saiyans driven by rivalry.'},
+    {name:'Gohan',role:'Saiyan Son',img:'https://cdn.myanimelist.net/images/characters/2/206136.jpg',type:'support',desc:'Goku\'s son with latent power that surpasses his father.'},
+    {name:'Frieza',role:'Antagonist',img:'https://cdn.myanimelist.net/images/characters/7/206140.jpg',type:'support',desc:'The galactic tyrant who destroyed Planet Vegeta.'}
+  ],
+  'Dragon Ball Super':[
+    {name:'Goku',role:'Saiyan Hero',img:'https://cdn.myanimelist.net/images/characters/3/206134.jpg',type:'main',desc:'Goku achieves Ultra Instinct in fierce universal battles.'},
+    {name:'Vegeta',role:'Saiyan Prince',img:'https://cdn.myanimelist.net/images/characters/11/206135.jpg',type:'main',desc:'Vegeta masters his own divine power through sheer pride.'},
+    {name:'Beerus',role:'God of Destruction',img:'https://cdn.myanimelist.net/images/characters/7/266399.jpg',type:'support',desc:'The sleepy God of Destruction who loves food.'}
+  ],
+  'My Hero Academia':[
+    {name:'Izuku Midoriya',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/5/321829.jpg',type:'main',desc:'Quirkless boy who inherits the greatest power from the greatest hero.'},
+    {name:'Katsuki Bakugo',role:'Rival',img:'https://cdn.myanimelist.net/images/characters/3/321832.jpg',type:'main',desc:'Explosive rival who wants to surpass All Might.'},
+    {name:'Shoto Todoroki',role:'Hero Student',img:'https://cdn.myanimelist.net/images/characters/12/321830.jpg',type:'main',desc:'Half fire, half ice hero learning to accept all of himself.'},
+    {name:'All Might',role:'Symbol of Peace',img:'https://cdn.myanimelist.net/images/characters/8/321828.jpg',type:'support',desc:'The world\'s greatest hero who passes on his legacy.'}
+  ],
+  'Jujutsu Kaisen':[
+    {name:'Yuji Itadori',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/2/494103.jpg',type:'main',desc:'The boy who swallowed a cursed finger and became Sukuna\'s vessel.'},
+    {name:'Megumi Fushiguro',role:'Jujutsu Sorcerer',img:'https://cdn.myanimelist.net/images/characters/4/494104.jpg',type:'main',desc:'Calm strategist who summons divine shikigami.'},
+    {name:'Nobara Kugisaki',role:'Jujutsu Sorcerer',img:'https://cdn.myanimelist.net/images/characters/9/494105.jpg',type:'main',desc:'Fierce sorcerer who fights with hammer and nails.'},
+    {name:'Satoru Gojo',role:'Strongest Sorcerer',img:'https://cdn.myanimelist.net/images/characters/3/494102.jpg',type:'support',desc:'The blindfolded genius considered the strongest being alive.'}
+  ],
+  'Chainsaw Man':[
+    {name:'Denji',role:'Chainsaw Devil',img:'https://cdn.myanimelist.net/images/characters/9/520005.jpg',type:'main',desc:'A broke kid fused with his chainsaw devil for a simple dream.'},
+    {name:'Makima',role:'Control Devil',img:'https://cdn.myanimelist.net/images/characters/6/520004.jpg',type:'main',desc:'The mysterious handler whose true nature is terrifying.'},
+    {name:'Power',role:'Blood Devil',img:'https://cdn.myanimelist.net/images/characters/12/520006.jpg',type:'main',desc:'Chaotic fiend with a heart of gold — for her cat.'},
+    {name:'Aki Hayakawa',role:'Devil Hunter',img:'https://cdn.myanimelist.net/images/characters/13/520007.jpg',type:'support',desc:'Dedicated hunter whose fate is intertwined with guns and curses.'}
+  ],
+  'Mob Psycho 100':[
+    {name:'Shigeo Kageyama',role:'Esper',img:'https://cdn.myanimelist.net/images/characters/13/290287.jpg',type:'main',desc:'The most powerful esper alive who only wants to be normal.'},
+    {name:'Reigen Arataka',role:'Con-Man Mentor',img:'https://cdn.myanimelist.net/images/characters/8/290288.jpg',type:'main',desc:'A fraudulent psychic who genuinely cares for Mob.'},
+    {name:'Dimple',role:'Spirit',img:'https://cdn.myanimelist.net/images/characters/9/290290.jpg',type:'support',desc:'A failed evil spirit who becomes Mob\'s unlikely companion.'}
+  ],
+  'Vinland Saga':[
+    {name:'Thorfinn',role:'Warrior',img:'https://cdn.myanimelist.net/images/characters/3/401897.jpg',type:'main',desc:'A boy consumed by revenge who learns what true strength means.'},
+    {name:'Askeladd',role:'Mercenary Captain',img:'https://cdn.myanimelist.net/images/characters/11/401898.jpg',type:'main',desc:'The brilliant cunning captain who shapes Thorfinn\'s destiny.'},
+    {name:'Canute',role:'Prince',img:'https://cdn.myanimelist.net/images/characters/4/401899.jpg',type:'support',desc:'A timid prince who transforms into a ruthless king.'}
+  ],
+  'Re:Zero':[
+    {name:'Subaru Natsuki',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/3/314514.jpg',type:'main',desc:'An ordinary human with the curse of returning from death.'},
+    {name:'Emilia',role:'Half-Elf',img:'https://cdn.myanimelist.net/images/characters/12/314511.jpg',type:'main',desc:'Kind silver-haired half-elf candidate for the throne.'},
+    {name:'Rem',role:'Maid',img:'https://cdn.myanimelist.net/images/characters/11/314518.jpg',type:'main',desc:'The devoted blue-haired maid whose love for Subaru is absolute.'},
+    {name:'Ram',role:'Maid',img:'https://cdn.myanimelist.net/images/characters/3/314519.jpg',type:'support',desc:'Rem\'s sharp-tongued twin sister.'}
+  ],
+  'Code Geass':[
+    {name:'Lelouch Lamperouge',role:'Zero',img:'https://cdn.myanimelist.net/images/characters/8/76063.jpg',type:'main',desc:'The exiled prince who commands armies with the power of absolute obedience.'},
+    {name:'C.C.',role:'Immortal',img:'https://cdn.myanimelist.net/images/characters/6/76065.jpg',type:'main',desc:'The mysterious immortal who grants Lelouch his Geass.'},
+    {name:'Suzaku Kururugi',role:'Knight',img:'https://cdn.myanimelist.net/images/characters/11/76064.jpg',type:'main',desc:'Lelouch\'s childhood friend who fights from within the system.'},
+    {name:'Kallen Kozuki',role:'Ace Pilot',img:'https://cdn.myanimelist.net/images/characters/14/76066.jpg',type:'support',desc:'The fierce ace pilot of the Black Knights.'}
+  ],
+  'Gurren Lagann':[
+    {name:'Simon',role:'Digger',img:'https://cdn.myanimelist.net/images/characters/2/16513.jpg',type:'main',desc:'The timid driller boy who becomes the saviour of the universe.'},
+    {name:'Kamina',role:'Big Bro',img:'https://cdn.myanimelist.net/images/characters/12/16514.jpg',type:'main',desc:'The fearless hot-blooded bro whose spirit drives all.'},
+    {name:'Yoko Littner',role:'Sniper',img:'https://cdn.myanimelist.net/images/characters/9/16515.jpg',type:'main',desc:'The sharp-shooting girl who fights alongside the team.'},
+    {name:'Nia Teppelin',role:'Princess',img:'https://cdn.myanimelist.net/images/characters/8/16517.jpg',type:'support',desc:'The innocent princess who becomes the Anti-Spiral\'s vessel.'}
+  ],
+  'Cowboy Bebop':[
+    {name:'Spike Spiegel',role:'Bounty Hunter',img:'https://cdn.myanimelist.net/images/characters/4/50197.jpg',type:'main',desc:'A former syndicate hitman living only to settle the past.'},
+    {name:'Faye Valentine',role:'Gambler',img:'https://cdn.myanimelist.net/images/characters/12/50199.jpg',type:'main',desc:'A mysterious woman searching for her lost memories.'},
+    {name:'Jet Black',role:'Ex-Cop',img:'https://cdn.myanimelist.net/images/characters/10/50198.jpg',type:'main',desc:'The principled ex-cop and dependable father figure of the crew.'}
+  ],
+  'Sword Art Online':[
+    {name:'Kirito',role:'Black Swordsman',img:'https://cdn.myanimelist.net/images/characters/9/211030.jpg',type:'main',desc:'The solo player who fights to survive the deadly virtual world.'},
+    {name:'Asuna',role:'Flash',img:'https://cdn.myanimelist.net/images/characters/3/211029.jpg',type:'main',desc:'The lightning-fast swordswoman and Kirito\'s partner.'},
+    {name:'Klein',role:'Friend',img:'https://cdn.myanimelist.net/images/characters/2/211033.jpg',type:'support',desc:'Kirito\'s good-natured friend who leads his own guild.'}
+  ],
+  'Fairy Tail':[
+    {name:'Natsu Dragneel',role:'Dragon Slayer',img:'https://cdn.myanimelist.net/images/characters/2/24974.jpg',type:'main',desc:'The fire-breathing Dragon Slayer mage who never gives up on his guild.'},
+    {name:'Lucy Heartfilia',role:'Celestial Wizard',img:'https://cdn.myanimelist.net/images/characters/3/24975.jpg',type:'main',desc:'Celestial spirit mage who joins Fairy Tail chasing her dream.'},
+    {name:'Erza Scarlet',role:'S-Class Mage',img:'https://cdn.myanimelist.net/images/characters/5/24976.jpg',type:'main',desc:'The legendary Titania who can requip any armor.'},
+    {name:'Gray Fullbuster',role:'Ice Mage',img:'https://cdn.myanimelist.net/images/characters/10/24977.jpg',type:'support',desc:'The ice-make mage who constantly loses his clothes.'}
+  ],
+  'Black Clover':[
+    {name:'Asta',role:'Magic Knight',img:'https://cdn.myanimelist.net/images/characters/3/341446.jpg',type:'main',desc:'The only person in a magic world born without magic.'},
+    {name:'Yuno',role:'Magic Knight',img:'https://cdn.myanimelist.net/images/characters/10/341447.jpg',type:'main',desc:'Asta\'s rival who wields extraordinary wind magic.'},
+    {name:'Yami Sukehiro',role:'Captain',img:'https://cdn.myanimelist.net/images/characters/8/341449.jpg',type:'support',desc:'The intimidating captain of the Black Bulls who pushes limits.'}
+  ],
+  'Tokyo Ghoul':[
+    {name:'Kaneki Ken',role:'Half-Ghoul',img:'https://cdn.myanimelist.net/images/characters/9/257316.jpg',type:'main',desc:'An ordinary student turned half-ghoul struggling with his new reality.'},
+    {name:'Touka Kirishima',role:'Ghoul',img:'https://cdn.myanimelist.net/images/characters/7/257318.jpg',type:'main',desc:'The fierce ghoul who protects the coffee shop Anteiku.'},
+    {name:'Rize Kamishiro',role:'Ghoul',img:'https://cdn.myanimelist.net/images/characters/4/257317.jpg',type:'support',desc:'The Binge Eater whose organs transform Kaneki\'s fate.'}
+  ],
+  'Overlord':[
+    {name:'Ainz Ooal Gown',role:'Undead Overlord',img:'https://cdn.myanimelist.net/images/characters/7/279731.jpg',type:'main',desc:'A skeleton mage who was the last player left in the game world.'},
+    {name:'Albedo',role:'Floor Guardian',img:'https://cdn.myanimelist.net/images/characters/4/279730.jpg',type:'main',desc:'The beautiful Overseer of Nazarick who is devoted to Ainz.'},
+    {name:'Shalltear Bloodfallen',role:'Vampire',img:'https://cdn.myanimelist.net/images/characters/9/279733.jpg',type:'support',desc:'The powerful vampire Floor Guardian who serves Nazarick.'}
+  ],
+  'KonoSuba':[
+    {name:'Kazuma Satou',role:'Adventurer',img:'https://cdn.myanimelist.net/images/characters/12/310302.jpg',type:'main',desc:'A selfish but surprisingly capable adventurer in a fantasy world.'},
+    {name:'Aqua',role:'Goddess',img:'https://cdn.myanimelist.net/images/characters/6/310301.jpg',type:'main',desc:'A useless goddess who cries constantly but has real power.'},
+    {name:'Megumin',role:'Arch-Wizard',img:'https://cdn.myanimelist.net/images/characters/3/310303.jpg',type:'main',desc:'The explosion-obsessed mage who can only cast one spell per day.'},
+    {name:'Darkness',role:'Crusader',img:'https://cdn.myanimelist.net/images/characters/9/310304.jpg',type:'support',desc:'The masochistic crusader who loves taking damage.'}
+  ],
+  'That Time I Got Reincarnated as a Slime':[
+    {name:'Rimuru Tempest',role:'Demon Lord',img:'https://cdn.myanimelist.net/images/characters/4/381432.jpg',type:'main',desc:'The overwhelmingly powerful slime who builds a monster nation.'},
+    {name:'Shion',role:'Secretary',img:'https://cdn.myanimelist.net/images/characters/8/381434.jpg',type:'main',desc:'Rimuru\'s powerful and devoted purple-haired secretary.'},
+    {name:'Benimaru',role:'General',img:'https://cdn.myanimelist.net/images/characters/12/381433.jpg',type:'support',desc:'The ogre turned military general of Tempest.'}
+  ],
+  'Mushoku Tensei':[
+    {name:'Rudeus Greyrat',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/2/460560.jpg',type:'main',desc:'A reincarnated man given a second chance to live without regrets.'},
+    {name:'Sylphiette',role:'Childhood Friend',img:'https://cdn.myanimelist.net/images/characters/8/460562.jpg',type:'main',desc:'The silver-haired elf girl who is Rudeus\'s dearest friend.'},
+    {name:'Eris Boreas Greyrat',role:'Warrior',img:'https://cdn.myanimelist.net/images/characters/6/460561.jpg',type:'main',desc:'The fierce red-haired noble girl who trains to surpass her limits.'}
+  ],
+  'No Game No Life':[
+    {name:'Sora',role:'Gamer',img:'https://cdn.myanimelist.net/images/characters/7/276527.jpg',type:'main',desc:'The genius gamer who never loses, transported to a world decided by games.'},
+    {name:'Shiro',role:'Gamer',img:'https://cdn.myanimelist.net/images/characters/4/276526.jpg',type:'main',desc:'Sora\'s genius younger sister who sees games as pure logic.'},
+    {name:'Stephanie Dola',role:'Princess',img:'https://cdn.myanimelist.net/images/characters/9/276529.jpg',type:'support',desc:'The hardworking princess trying to restore her kingdom.'}
+  ],
+  'The Promised Neverland':[
+    {name:'Emma',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/7/367604.jpg',type:'main',desc:'The optimistic girl who refuses to leave anyone behind.'},
+    {name:'Norman',role:'Strategist',img:'https://cdn.myanimelist.net/images/characters/11/367605.jpg',type:'main',desc:'The calculating genius who plans the escape.'},
+    {name:'Ray',role:'Tactician',img:'https://cdn.myanimelist.net/images/characters/8/367606.jpg',type:'main',desc:'The realistic and resourceful member who prepares for every outcome.'}
+  ],
+  'Fruits Basket':[
+    {name:'Tohru Honda',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/6/404455.jpg',type:'main',desc:'The kind orphan girl who unknowingly heals the cursed Sohma family.'},
+    {name:'Kyo Sohma',role:'Cat',img:'https://cdn.myanimelist.net/images/characters/10/404456.jpg',type:'main',desc:'The hot-headed cursed cat of the Zodiac.'},
+    {name:'Yuki Sohma',role:'Rat',img:'https://cdn.myanimelist.net/images/characters/3/404457.jpg',type:'main',desc:'The admired rat of the Zodiac hiding deep emotional wounds.'}
+  ],
+  'Clannad After Story':[
+    {name:'Tomoya Okazaki',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/4/77257.jpg',type:'main',desc:'A delinquent who finds meaning through family and loss.'},
+    {name:'Nagisa Furukawa',role:'Love Interest',img:'https://cdn.myanimelist.net/images/characters/5/77258.jpg',type:'main',desc:'The gentle girl who loves Dango and brings warmth everywhere.'},
+    {name:'Ushio Okazaki',role:'Daughter',img:'https://cdn.myanimelist.net/images/characters/14/77262.jpg',type:'support',desc:'Tomoya and Nagisa\'s daughter whose presence changes everything.'}
+  ],
+  'Toradora':[
+    {name:'Ryuuji Takasu',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/11/78093.jpg',type:'main',desc:'A gentle boy with a scary face who loves cleaning.'},
+    {name:'Taiga Aisaka',role:'Palmtop Tiger',img:'https://cdn.myanimelist.net/images/characters/3/78092.jpg',type:'main',desc:'The tiny but fierce girl known as the Palmtop Tiger.'},
+    {name:'Ami Kawashima',role:'Model',img:'https://cdn.myanimelist.net/images/characters/7/78097.jpg',type:'support',desc:'A popular model who hides her real self behind a facade.'}
+  ],
+  'Horimiya':[
+    {name:'Kyouko Hori',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/6/449873.jpg',type:'main',desc:'Popular girl who hides her domestic side from classmates.'},
+    {name:'Izumi Miyamura',role:'Love Interest',img:'https://cdn.myanimelist.net/images/characters/4/449872.jpg',type:'main',desc:'The quiet boy with hidden tattoos and a warm personality.'},
+    {name:'Tooru Ishikawa',role:'Friend',img:'https://cdn.myanimelist.net/images/characters/9/449876.jpg',type:'support',desc:'Hori\'s childhood friend who gradually accepts his feelings.'}
+  ],
+  'Kaguya-sama Love is War':[
+    {name:'Kaguya Shinomiya',role:'Vice President',img:'https://cdn.myanimelist.net/images/characters/6/355572.jpg',type:'main',desc:'The genius heiress who refuses to confess first.'},
+    {name:'Miyuki Shirogane',role:'President',img:'https://cdn.myanimelist.net/images/characters/5/355571.jpg',type:'main',desc:'The hardworking president who refuses to confess first.'},
+    {name:'Chika Fujiwara',role:'Secretary',img:'https://cdn.myanimelist.net/images/characters/4/355573.jpg',type:'main',desc:'The wild card secretary who unintentionally derails all plans.'},
+    {name:'Yu Ishigami',role:'Treasurer',img:'https://cdn.myanimelist.net/images/characters/8/355574.jpg',type:'support',desc:'The depressed treasurer who grows into a fan favourite.'}
+  ],
+  'My Dress-Up Darling':[
+    {name:'Wakana Gojo',role:'Hina Doll Maker',img:'https://cdn.myanimelist.net/images/characters/9/507869.jpg',type:'main',desc:'The introverted boy passionate about making traditional dolls.'},
+    {name:'Marin Kitagawa',role:'Cosplayer',img:'https://cdn.myanimelist.net/images/characters/5/507868.jpg',type:'main',desc:'The gorgeous, unabashedly enthusiastic cosplay fan.'}
+  ],
+  'Cyberpunk Edgerunners':[
+    {name:'David Martinez',role:'Edgerunner',img:'https://cdn.myanimelist.net/images/characters/5/521601.jpg',type:'main',desc:'A street kid who becomes a chrome legend of Night City.'},
+    {name:'Lucy',role:'Netrunner',img:'https://cdn.myanimelist.net/images/characters/9/521602.jpg',type:'main',desc:'The skilled netrunner who dreams of reaching the moon.'},
+    {name:'Maine',role:'Crew Leader',img:'https://cdn.myanimelist.net/images/characters/12/521603.jpg',type:'support',desc:'The brutal leader who takes David under his wing.'}
+  ],
+  'Blue Lock':[
+    {name:'Yoichi Isagi',role:'Striker',img:'https://cdn.myanimelist.net/images/characters/3/536862.jpg',type:'main',desc:'The spatial awareness genius who evolves through extreme competition.'},
+    {name:'Meguru Bachira',role:'Dribbler',img:'https://cdn.myanimelist.net/images/characters/7/536864.jpg',type:'main',desc:'The eccentric dribbler who plays with an imaginary monster.'},
+    {name:'Seishiro Nagi',role:'Prodigy',img:'https://cdn.myanimelist.net/images/characters/11/536863.jpg',type:'support',desc:'The lazy genius who discovers football is the only thing he loves.'}
+  ],
+  'Frieren Beyond Journey End':[
+    {name:'Frieren',role:'Elf Mage',img:'https://cdn.myanimelist.net/images/characters/3/576272.jpg',type:'main',desc:'An elven mage who outlives all companions and learns to value time.'},
+    {name:'Fern',role:'Mage',img:'https://cdn.myanimelist.net/images/characters/8/576273.jpg',type:'main',desc:'Frieren\'s serious apprentice with exceptional talent.'},
+    {name:'Stark',role:'Warrior',img:'https://cdn.myanimelist.net/images/characters/11/576274.jpg',type:'main',desc:'The honest warrior who hides his cowardice behind enormous power.'},
+    {name:'Himmel',role:'Hero',img:'https://cdn.myanimelist.net/images/characters/4/576275.jpg',type:'support',desc:'The beloved hero of legend whose memory drives Frieren forward.'}
+  ],
+  'Dungeon Meshi':[
+    {name:'Laios Touden',role:'Party Leader',img:'https://cdn.myanimelist.net/images/characters/3/577951.jpg',type:'main',desc:'Monster-obsessed adventurer who insists on eating dungeon creatures.'},
+    {name:'Marcille Donato',role:'Mage',img:'https://cdn.myanimelist.net/images/characters/11/577952.jpg',type:'main',desc:'The anxious elf mage who reluctantly eats monster cuisine.'},
+    {name:'Chilchuck',role:'Halfling Thief',img:'https://cdn.myanimelist.net/images/characters/7/577953.jpg',type:'main',desc:'The professional lock picker who keeps the team practical.'},
+    {name:'Senshi',role:'Dwarf Fighter',img:'https://cdn.myanimelist.net/images/characters/6/577954.jpg',type:'support',desc:'The legendary dungeon cook who knows every monster\'s flavour.'}
+  ],
+  'Bocchi the Rock':[
+    {name:'Hitori Gotoh',role:'Guitarist',img:'https://cdn.myanimelist.net/images/characters/8/536791.jpg',type:'main',desc:'The extreme introvert who is secretly a guitar god.'},
+    {name:'Nijika Ijichi',role:'Drummer',img:'https://cdn.myanimelist.net/images/characters/4/536793.jpg',type:'main',desc:'The cheerful drummer who recruits Bocchi into Kessoku Band.'},
+    {name:'Ryo Yamada',role:'Bassist',img:'https://cdn.myanimelist.net/images/characters/12/536792.jpg',type:'main',desc:'The cool, cryptic bassist who is also always broke.'},
+    {name:'Ikuyo Kita',role:'Vocalist',img:'https://cdn.myanimelist.net/images/characters/6/536794.jpg',type:'support',desc:'The popular vocalist who forces Bocchi out of her comfort zone.'}
+  ],
+  'Oshi no Ko':[
+    {name:'Aqua Hoshino',role:'Actor',img:'https://cdn.myanimelist.net/images/characters/6/570217.jpg',type:'main',desc:'A reincarnated doctor who seeks revenge for his mother\'s murder.'},
+    {name:'Ruby Hoshino',role:'Idol',img:'https://cdn.myanimelist.net/images/characters/10/570218.jpg',type:'main',desc:'Aqua\'s twin who pursues their mother\'s idol dream with pure passion.'},
+    {name:'Ai',role:'Idol',img:'https://cdn.myanimelist.net/images/characters/4/570216.jpg',type:'support',desc:'The top idol who loves her children with all her heart.'}
+  ],
+  'The Apothecary Diaries':[
+    {name:'Maomao',role:'Apothecary',img:'https://cdn.myanimelist.net/images/characters/7/579013.jpg',type:'main',desc:'The brilliant apothecary girl who solves palace mysteries with herbs.'},
+    {name:'Jinshi',role:'Palace Official',img:'https://cdn.myanimelist.net/images/characters/11/579014.jpg',type:'main',desc:'The devastatingly handsome eunuch who keeps involving Maomao in cases.'}
+  ],
+  'Violet Evergarden':[
+    {name:'Violet Evergarden',role:'Auto Memory Doll',img:'https://cdn.myanimelist.net/images/characters/3/345571.jpg',type:'main',desc:'A former child soldier learning to understand human emotions through letters.'},
+    {name:'Claudia Hodgins',role:'Mentor',img:'https://cdn.myanimelist.net/images/characters/8/345572.jpg',type:'support',desc:'The founder of CH Postal who gives Violet a new purpose.'}
+  ],
+  'Neon Genesis Evangelion':[
+    {name:'Shinji Ikari',role:'Pilot',img:'https://cdn.myanimelist.net/images/characters/8/284478.jpg',type:'main',desc:'The reluctant pilot who fights Angels to earn his father\'s approval.'},
+    {name:'Rei Ayanami',role:'Pilot',img:'https://cdn.myanimelist.net/images/characters/4/284480.jpg',type:'main',desc:'The mysterious first child whose origins lie at the core of the plot.'},
+    {name:'Asuka Langley',role:'Pilot',img:'https://cdn.myanimelist.net/images/characters/11/284479.jpg',type:'main',desc:'The proud German-Japanese prodigy who hides deep vulnerability.'},
+    {name:'Misato Katsuragi',role:'Operations Director',img:'https://cdn.myanimelist.net/images/characters/9/284481.jpg',type:'support',desc:'The fierce, beer-loving guardian who fights for humanity.'}
+  ],
+  'Made in Abyss':[
+    {name:'Riko',role:'Delver',img:'https://cdn.myanimelist.net/images/characters/6/310516.jpg',type:'main',desc:'The determined girl who descends into the Abyss to find her mother.'},
+    {name:'Reg',role:'Robot',img:'https://cdn.myanimelist.net/images/characters/4/310515.jpg',type:'main',desc:'A robot boy who protects Riko and searches for his own past.'},
+    {name:'Nanachi',role:'Hollow',img:'https://cdn.myanimelist.net/images/characters/5/310517.jpg',type:'main',desc:'A fluffy Hollow who guides the children through the Abyss.'}
+  ],
+  'Erased':[
+    {name:'Satoru Fujinuma',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/10/291927.jpg',type:'main',desc:'A young man sent back in time to prevent a child\'s kidnapping.'},
+    {name:'Kayo Hinazuki',role:'Victim',img:'https://cdn.myanimelist.net/images/characters/3/291929.jpg',type:'main',desc:'The lonely girl Satoru races to save from tragedy.'}
+  ],
+  'Psycho-Pass':[
+    {name:'Akane Tsunemori',role:'Inspector',img:'https://cdn.myanimelist.net/images/characters/3/199382.jpg',type:'main',desc:'A new inspector who questions the justice of the Sibyl System.'},
+    {name:'Shinya Kogami',role:'Enforcer',img:'https://cdn.myanimelist.net/images/characters/4/199383.jpg',type:'main',desc:'The hunting-dog Enforcer obsessed with catching Makishima.'},
+    {name:'Shogo Makishima',role:'Antagonist',img:'https://cdn.myanimelist.net/images/characters/8/199384.jpg',type:'support',desc:'A humanist criminal who exposes the Sibyl System\'s flaws.'}
+  ],
+  'Steins Gate':[
+    {name:'Rintaro Okabe',role:'Mad Scientist',img:'https://cdn.myanimelist.net/images/characters/7/114233.jpg',type:'main',desc:'Self-proclaimed mad scientist who accidentally invents time travel.'},
+    {name:'Kurisu Makise',role:'Neuroscientist',img:'https://cdn.myanimelist.net/images/characters/4/114232.jpg',type:'main',desc:'The brilliant scientist whose fate is the key to everything.'},
+    {name:'Mayuri Shiina',role:'Lab Member',img:'https://cdn.myanimelist.net/images/characters/14/114235.jpg',type:'support',desc:'Okabe\'s cheerful childhood friend he fights through time to protect.'}
+  ],
+  'Your Name':[
+    {name:'Taki Tachibana',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/6/311995.jpg',type:'main',desc:'A Tokyo boy who body-swaps with a rural girl and falls in love.'},
+    {name:'Mitsuha Miyamizu',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/4/311994.jpg',type:'main',desc:'A small-town girl who longs for the city and finds something more.'}
+  ],
+  'A Silent Voice':[
+    {name:'Shoya Ishida',role:'Protagonist',img:'https://cdn.myanimelist.net/images/characters/9/349232.jpg',type:'main',desc:'A former bully who seeks redemption by reconnecting with the girl he hurt.'},
+    {name:'Shoko Nishimiya',role:'Deaf Girl',img:'https://cdn.myanimelist.net/images/characters/8/349231.jpg',type:'main',desc:'The deaf girl whose forgiving nature teaches Shoya the meaning of life.'}
+  ],
+  'Haikyuu':[
+    {name:'Shoyo Hinata',role:'Middle Blocker',img:'https://cdn.myanimelist.net/images/characters/3/229486.jpg',type:'main',desc:'The tiny volleyball player with extraordinary jumping ability.'},
+    {name:'Tobio Kageyama',role:'Setter',img:'https://cdn.myanimelist.net/images/characters/10/229487.jpg',type:'main',desc:'The King of the Court whose only equal is Hinata.'},
+    {name:'Kei Tsukishima',role:'Blocker',img:'https://cdn.myanimelist.net/images/characters/11/229492.jpg',type:'main',desc:'The intellectual blocker who gradually finds his reason to play.'},
+    {name:'Daichi Sawamura',role:'Captain',img:'https://cdn.myanimelist.net/images/characters/4/229488.jpg',type:'support',desc:'The dependable captain who is the backbone of Karasuno.'}
+  ]
+};
+
+// ── Accurate anime data (eps, year, studio, rating) from MAL ────────────
+var ACCURATE_DATA={
+  // Action
+  'Attack on Titan':         {eps:'87 eps', year:'2013', studio:'Wit Studio/MAPPA', rating:'9.08'},
+  'Demon Slayer':            {eps:'55 eps', year:'2019', studio:'ufotable', rating:'8.60'},
+  'One Punch Man':           {eps:'25 eps', year:'2015', studio:'Madhouse', rating:'8.69'},
+  'Hunter x Hunter':         {eps:'148 eps',year:'2011', studio:'Madhouse', rating:'9.05'},
+  'Naruto':                  {eps:'220 eps',year:'2002', studio:'Pierrot', rating:'7.97'},
+  'Naruto Shippuden':        {eps:'500 eps',year:'2007', studio:'Pierrot', rating:'8.14'},
+  'Bleach':                  {eps:'366 eps',year:'2004', studio:'Pierrot', rating:'7.92'},
+  'Bleach TYBW':             {eps:'52 eps', year:'2022', studio:'Pierrot', rating:'9.00'},
+  'One Piece':               {eps:'1100+ eps',year:'1999',studio:'Toei Animation', rating:'8.74'},
+  'Dragon Ball Z':           {eps:'291 eps',year:'1989', studio:'Toei Animation', rating:'8.15'},
+  'Dragon Ball Super':       {eps:'131 eps',year:'2015', studio:'Toei Animation', rating:'7.64'},
+  'My Hero Academia':        {eps:'113 eps',year:'2016', studio:'Bones', rating:'7.89'},
+  'Jujutsu Kaisen':          {eps:'48 eps', year:'2020', studio:'MAPPA', rating:'8.62'},
+  'Chainsaw Man':            {eps:'12 eps', year:'2022', studio:'MAPPA', rating:'8.62'},
+  'Vinland Saga':            {eps:'48 eps', year:'2019', studio:'Wit/MAPPA', rating:'8.75'},
+  'Mob Psycho 100':          {eps:'37 eps', year:'2016', studio:'Bones', rating:'8.52'},
+  'Samurai Champloo':        {eps:'26 eps', year:'2004', studio:'Manglobe', rating:'8.49'},
+  'Cowboy Bebop':            {eps:'26 eps', year:'1998', studio:'Sunrise', rating:'8.75'},
+  'Trigun':                  {eps:'26 eps', year:'1998', studio:'Madhouse', rating:'8.10'},
+  'Black Clover':            {eps:'170 eps',year:'2017', studio:'Pierrot', rating:'7.93'},
+  'Fairy Tail':              {eps:'175 eps',year:'2009', studio:'A-1 Pictures', rating:'7.62'},
+  'Seven Deadly Sins':       {eps:'96 eps', year:'2014', studio:'A-1 Pictures', rating:'7.73'},
+  'Tokyo Revengers':         {eps:'61 eps', year:'2021', studio:'Liden Films', rating:'7.84'},
+  'Sword Art Online':        {eps:'25 eps', year:'2012', studio:'A-1 Pictures', rating:'7.21'},
+  'Assassination Classroom': {eps:'47 eps', year:'2015', studio:'Lerche', rating:'8.11'},
+  'Gintama':                 {eps:'367 eps',year:'2006', studio:'Sunrise', rating:'9.05'},
+  'Fullmetal Alchemist Brotherhood':{eps:'64 eps',year:'2009',studio:'Bones', rating:'9.08'},
+  'Blue Exorcist':           {eps:'25 eps', year:'2011', studio:'A-1 Pictures', rating:'7.49'},
+  'Soul Eater':              {eps:'51 eps', year:'2008', studio:'Bones', rating:'7.85'},
+  'Akame ga Kill':           {eps:'24 eps', year:'2014', studio:'White Fox', rating:'7.48'},
+  'The Rising of Shield Hero':{eps:'25 eps',year:'2019',studio:'Kinema Citrus', rating:'7.54'},
+  'That Time I Got Reincarnated as a Slime':{eps:'48 eps',year:'2018',studio:'8bit', rating:'8.10'},
+  'No Game No Life':         {eps:'12 eps', year:'2014', studio:'Madhouse', rating:'8.15'},
+  'Overlord':                {eps:'13 eps', year:'2015', studio:'Madhouse', rating:'7.91'},
+  'Log Horizon':             {eps:'25 eps', year:'2013', studio:'Satelight', rating:'7.75'},
+  'High School DxD':         {eps:'12 eps', year:'2012', studio:'TNK', rating:'7.36'},
+  'Danmachi':                {eps:'13 eps', year:'2015', studio:'J.C.Staff', rating:'7.55'},
+  'KonoSuba':                {eps:'10 eps', year:'2016', studio:'Deen', rating:'8.15'},
+  'Arifureta':               {eps:'13 eps', year:'2019', studio:'Asread/White Fox', rating:'6.97'},
+  'The Eminence in Shadow':  {eps:'20 eps', year:'2022', studio:'Nexus', rating:'8.17'},
+  'Mushoku Tensei':          {eps:'23 eps', year:'2021', studio:'Bind', rating:'8.30'},
+  'Kingdom':                 {eps:'38 eps', year:'2012', studio:'Pierrot', rating:'8.02'},
+  'The God of High School':  {eps:'13 eps', year:'2020', studio:'MAPPA', rating:'7.18'},
+  'Tower of God':            {eps:'13 eps', year:'2020', studio:'Telecom Animation', rating:'7.62'},
+  'Black Lagoon':            {eps:'12 eps', year:'2006', studio:'Madhouse', rating:'8.07'},
+  'Hellsing Ultimate':       {eps:'10 eps', year:'2006', studio:'Madhouse', rating:'8.32'},
+  'Claymore':                {eps:'26 eps', year:'2007', studio:'Madhouse', rating:'7.88'},
+  'Berserk 1997':            {eps:'25 eps', year:'1997', studio:'OLM', rating:'8.63'},
+  'Fire Force':              {eps:'24 eps', year:'2019', studio:'David Production', rating:'7.97'},
+  'Inuyasha':                {eps:'167 eps',year:'2000', studio:'Sunrise', rating:'7.80'},
+  'Boruto':                  {eps:'293 eps',year:'2017', studio:'Pierrot', rating:'5.70'},
+  'Katekyo Hitman Reborn':   {eps:'203 eps',year:'2006', studio:'Artland', rating:'8.07'},
+  'Baki':                    {eps:'26 eps', year:'2018', studio:'TMS Entertainment', rating:'7.60'},
+  'Baki Hanma':              {eps:'13 eps', year:'2021', studio:'TMS Entertainment', rating:'7.75'},
+  'Kengan Ashura':           {eps:'24 eps', year:'2019', studio:'Larx Entertainment', rating:'7.62'},
+  'Goblin Slayer':           {eps:'12 eps', year:'2018', studio:'White Fox', rating:'7.43'},
+  'Spy x Family':            {eps:'37 eps', year:'2022', studio:'Wit/CloverWorks', rating:'8.12'},
+  'One Piece Film Red':      {eps:'Movie',  year:'2022', studio:'Toei Animation', rating:'7.28'},
+  'Demon Slayer Mugen Train':{eps:'Movie',  year:'2020', studio:'ufotable', rating:'8.23'},
+  'Jujutsu Kaisen 0':        {eps:'Movie',  year:'2021', studio:'MAPPA', rating:'8.30'},
+  'My Hero Academia Heroes Rising':{eps:'Movie',year:'2019',studio:'Bones', rating:'7.98'},
+  'Re:Zero':                 {eps:'25 eps', year:'2016', studio:'White Fox', rating:'8.25'},
+  'Overlord II':             {eps:'13 eps', year:'2018', studio:'Madhouse', rating:'7.47'},
+  'Overlord III':            {eps:'13 eps', year:'2018', studio:'Madhouse', rating:'7.45'},
+  'Darker than Black':       {eps:'25 eps', year:'2007', studio:'Bones', rating:'8.13'},
+  'Dragon Ball Heroes':      {eps:'49 eps', year:'2018', studio:'Toei Animation', rating:'6.22'},
+  "D.Gray-man":              {eps:'103 eps',year:'2006', studio:'TMS Entertainment', rating:'7.93'},
+  'Cautious Hero':           {eps:'12 eps', year:'2019', studio:'White Fox', rating:'7.65'},
+  // Romance
+  'Your Lie in April':       {eps:'22 eps', year:'2014', studio:'A-1 Pictures', rating:'8.66'},
+  'Toradora':                {eps:'25 eps', year:'2008', studio:'J.C.Staff', rating:'8.23'},
+  'Clannad After Story':     {eps:'24 eps', year:'2008', studio:'Kyoto Animation', rating:'8.96'},
+  'Your Name':               {eps:'Movie',  year:'2016', studio:'CoMix Wave', rating:'8.85'},
+  'Weathering with You':     {eps:'Movie',  year:'2019', studio:'CoMix Wave', rating:'8.45'},
+  'A Silent Voice':          {eps:'Movie',  year:'2016', studio:'Kyoto Animation', rating:'8.94'},
+  'Fruits Basket':           {eps:'25 eps', year:'2019', studio:'TMS Entertainment', rating:'8.09'},
+  'Fruits Basket The Final': {eps:'13 eps', year:'2021', studio:'TMS Entertainment', rating:'8.84'},
+  'Violet Evergarden':       {eps:'13 eps', year:'2018', studio:'Kyoto Animation', rating:'8.37'},
+  'Violet Evergarden Movie': {eps:'Movie',  year:'2020', studio:'Kyoto Animation', rating:'9.01'},
+  'Anohana':                 {eps:'11 eps', year:'2011', studio:'A-1 Pictures', rating:'8.45'},
+  'Nisekoi':                 {eps:'20 eps', year:'2014', studio:'Shaft', rating:'7.73'},
+  'My Teen Romantic Comedy SNAFU':{eps:'13 eps',year:'2013',studio:'Brains Base', rating:'7.93'},
+  'SNAFU Climax':            {eps:'12 eps', year:'2020', studio:'Brain\'s Base', rating:'8.55'},
+  'Kaguya-sama Love is War': {eps:'12 eps', year:'2019', studio:'A-1 Pictures', rating:'8.40'},
+  'Kaguya-sama Season 2':    {eps:'12 eps', year:'2020', studio:'A-1 Pictures', rating:'8.64'},
+  'Kaguya-sama Ultra Romantic':{eps:'13 eps',year:'2022',studio:'A-1 Pictures', rating:'8.93'},
+  'Horimiya':                {eps:'13 eps', year:'2021', studio:'CloverWorks', rating:'8.18'},
+  'Bloom Into You':          {eps:'13 eps', year:'2018', studio:'TROYCA', rating:'8.02'},
+  'Monthly Girls Nozaki-kun':{eps:'12 eps', year:'2014', studio:'Doga Kobo', rating:'8.00'},
+  'Ouran High School Host Club':{eps:'26 eps',year:'2006',studio:'Bones', rating:'8.19'},
+  'Lovely Complex':          {eps:'24 eps', year:'2007', studio:'Toei Animation', rating:'8.12'},
+  '5 Centimeters Per Second':{eps:'Movie',  year:'2007', studio:'CoMix Wave', rating:'7.57'},
+  'Garden of Words':         {eps:'Movie',  year:'2013', studio:'CoMix Wave', rating:'7.85'},
+  'I Want to Eat Your Pancreas':{eps:'Movie',year:'2018',studio:'Studio Voln', rating:'8.60'},
+  'Wotakoi':                 {eps:'11 eps', year:'2018', studio:'A-1 Pictures', rating:'7.82'},
+  'My Little Monster':       {eps:'13 eps', year:'2012', studio:'Brains Base', rating:'7.61'},
+  'Say I Love You':          {eps:'13 eps', year:'2012', studio:'Zexcs', rating:'7.36'},
+  'My Love Story':           {eps:'24 eps', year:'2015', studio:'Madhouse', rating:'8.01'},
+  'Recovery of an MMO Junkie':{eps:'10 eps',year:'2017',studio:'Signal.MD', rating:'7.82'},
+  'Golden Time':             {eps:'24 eps', year:'2013', studio:'J.C.Staff', rating:'7.74'},
+  'Pet Girl of Sakurasou':   {eps:'24 eps', year:'2012', studio:'J.C.Staff', rating:'8.09'},
+  'Ao Haru Ride':            {eps:'12 eps', year:'2014', studio:'Production I.G', rating:'7.72'},
+  'Orange':                  {eps:'13 eps', year:'2016', studio:'Telecom Animation', rating:'8.01'},
+  'ReLife':                  {eps:'13 eps', year:'2016', studio:'TMS Entertainment', rating:'8.01'},
+  'Just Because':            {eps:'12 eps', year:'2017', studio:'Pine Jam', rating:'7.74'},
+  'Tsuki ga Kirei':          {eps:'12 eps', year:'2017', studio:'feel.', rating:'8.17'},
+  'Banana Fish':             {eps:'24 eps', year:'2018', studio:'MAPPA', rating:'8.70'},
+  'Yuri on Ice':             {eps:'12 eps', year:'2016', studio:'MAPPA', rating:'7.87'},
+  'Given':                   {eps:'11 eps', year:'2019', studio:'Lerche', rating:'8.04'},
+  'Kimi ni Todoke':          {eps:'25 eps', year:'2009', studio:'Production I.G', rating:'8.10'},
+  'We Never Learn':          {eps:'13 eps', year:'2019', studio:'Silver', rating:'7.16'},
+  'Rent-a-Girlfriend':       {eps:'12 eps', year:'2020', studio:'TMS Entertainment', rating:'7.32'},
+  'Domestic Girlfriend':     {eps:'12 eps', year:'2019', studio:'Diomedea', rating:'7.11'},
+  'My Dress-Up Darling':     {eps:'12 eps', year:'2022', studio:'CloverWorks', rating:'8.37'},
+  "Takagi-san":              {eps:'12 eps', year:'2018', studio:'Shin-Ei Animation', rating:'8.03'},
+  'Shikimori Not Just a Cutie':{eps:'12 eps',year:'2022',studio:'Doga Kobo', rating:'7.28'},
+  'The 100 Girlfriends':     {eps:'13 eps', year:'2023', studio:'Bibury Animation', rating:'8.47'},
+  'Frieren Beyond Journey End':{eps:'28 eps',year:'2023',studio:'Madhouse', rating:'9.33'},
+  'Clannad':                 {eps:'23 eps', year:'2007', studio:'Kyoto Animation', rating:'8.06'},
+  'Fruits Basket Season 2':  {eps:'25 eps', year:'2020', studio:'TMS Entertainment', rating:'8.56'},
+  'Violet Evergarden Eternity':{eps:'13 eps',year:'2019',studio:'Kyoto Animation', rating:'8.79'},
+  // Fantasy
+  'Fullmetal Alchemist: Brotherhood':{eps:'64 eps',year:'2009',studio:'Bones', rating:'9.08'},
+  'Made in Abyss':           {eps:'13 eps', year:'2017', studio:'Kinema Citrus', rating:'8.65'},
+  'Made in Abyss Dawn of Deep Soul':{eps:'Movie',year:'2020',studio:'Kinema Citrus', rating:'8.57'},
+  'Spirited Away':           {eps:'Movie',  year:'2001', studio:'Studio Ghibli', rating:'8.78'},
+  'Princess Mononoke':       {eps:'Movie',  year:'1997', studio:'Studio Ghibli', rating:'8.70'},
+  "Howls Moving Castle":     {eps:'Movie',  year:'2004', studio:'Studio Ghibli', rating:'8.67'},
+  'My Neighbor Totoro':      {eps:'Movie',  year:'1988', studio:'Studio Ghibli', rating:'8.55'},
+  "Kiki's Delivery Service": {eps:'Movie',  year:'1989', studio:'Studio Ghibli', rating:'8.32'},
+  'Castle in the Sky':       {eps:'Movie',  year:'1986', studio:'Studio Ghibli', rating:'8.47'},
+  "Nausicaa Valley of Wind": {eps:'Movie',  year:'1984', studio:'Studio Ghibli', rating:'8.26'},
+  'Re:Zero Season 2':        {eps:'25 eps', year:'2020', studio:'White Fox', rating:'8.37'},
+  'The Ancient Magus Bride': {eps:'24 eps', year:'2017', studio:'Wit Studio', rating:'8.03'},
+  'Mashle':                  {eps:'12 eps', year:'2023', studio:'A-1 Pictures', rating:'7.77'},
+  'Dungeon Meshi':           {eps:'24 eps', year:'2024', studio:'Trigger', rating:'8.72'},
+  'The Apothecary Diaries':  {eps:'24 eps', year:'2023', studio:'Toho Animation', rating:'8.69'},
+  'Cardcaptor Sakura':       {eps:'70 eps', year:'1998', studio:'Madhouse', rating:'8.18'},
+  'Sailor Moon Crystal':     {eps:'26 eps', year:'2014', studio:'Toei Animation', rating:'6.79'},
+  'Puella Magi Madoka Magica':{eps:'12 eps',year:'2011',studio:'Shaft', rating:'8.36'},
+  'Little Witch Academia':   {eps:'25 eps', year:'2017', studio:'Trigger', rating:'8.01'},
+  'Dorohedoro':              {eps:'12 eps', year:'2020', studio:'MAPPA', rating:'8.27'},
+  'Dororo':                  {eps:'24 eps', year:'2019', studio:'MAPPA/Tezuka Production', rating:'8.13'},
+  'My Next Life as a Villainess':{eps:'12 eps',year:'2020',studio:'Silver Link', rating:'7.68'},
+  'Ascendance of a Bookworm':{eps:'14 eps', year:'2019', studio:'Ajia-Do', rating:'8.34'},
+  'Skeleton Knight':         {eps:'12 eps', year:'2022', studio:'Hornets', rating:'7.07'},
+  'Reincarnated as a Sword':  {eps:'12 eps', year:'2022', studio:'C2C', rating:'7.40'},
+  'Uncle from Another World': {eps:'13 eps', year:'2022', studio:'AtelierPontdarc', rating:'8.03'},
+  'Dragon Ball Z Broly':      {eps:'Movie',  year:'2018', studio:'Toei Animation', rating:'7.64'},
+  'Wolf Children':            {eps:'Movie',  year:'2012', studio:'Studio Chizu', rating:'8.44'},
+  'Arrietty':                 {eps:'Movie',  year:'2010', studio:'Studio Ghibli', rating:'8.12'},
+  'From Up on Poppy Hill':    {eps:'Movie',  year:'2011', studio:'Studio Ghibli', rating:'7.81'},
+  'Ponyo':                    {eps:'Movie',  year:'2008', studio:'Studio Ghibli', rating:'7.79'},
+  'The Wind Rises':           {eps:'Movie',  year:'2013', studio:'Studio Ghibli', rating:'8.06'},
+  'Tale of Princess Kaguya':  {eps:'Movie',  year:'2013', studio:'Studio Ghibli', rating:'8.46'},
+  'Vanitas no Carte':         {eps:'12 eps', year:'2021', studio:'Brain\'s Base', rating:'7.79'},
+  'Black Butler':             {eps:'24 eps', year:'2008', studio:'A-1 Pictures', rating:'7.73'},
+  'SAO Alicization':          {eps:'24 eps', year:'2018', studio:'A-1 Pictures', rating:'7.81'},
+  // Thriller
+  'Death Note':               {eps:'37 eps', year:'2006', studio:'Madhouse', rating:'8.62'},
+  'Erased':                   {eps:'12 eps', year:'2016', studio:'A-1 Pictures', rating:'8.64'},
+  'The Promised Neverland':   {eps:'12 eps', year:'2019', studio:'CloverWorks', rating:'8.36'},
+  'Parasyte':                 {eps:'24 eps', year:'2014', studio:'Madhouse', rating:'8.36'},
+  'Kaiji':                    {eps:'26 eps', year:'2007', studio:'Madhouse', rating:'8.40'},
+  'Monster':                  {eps:'74 eps', year:'2004', studio:'Madhouse', rating:'8.71'},
+  'Terror in Resonance':      {eps:'11 eps', year:'2014', studio:'MAPPA', rating:'8.00'},
+  '91 Days':                  {eps:'13 eps', year:'2016', studio:'Shuka', rating:'8.04'},
+  'Psycho-Pass':              {eps:'22 eps', year:'2012', studio:'Production I.G', rating:'8.38'},
+  'Psycho-Pass Season 2':     {eps:'11 eps', year:'2014', studio:'Tatsunoko Production', rating:'7.28'},
+  'ID Invaded':               {eps:'13 eps', year:'2020', studio:'NAZ', rating:'8.14'},
+  'Talentless Nana':          {eps:'13 eps', year:'2020', studio:'Bridge', rating:'7.77'},
+  'Oshi no Ko':               {eps:'11 eps', year:'2023', studio:'Doga Kobo', rating:'8.63'},
+  'Odd Taxi':                 {eps:'13 eps', year:'2021', studio:'OLM/P.I.C.S.', rating:'8.64'},
+  'Link Click':               {eps:'11 eps', year:'2021', studio:'LAN Studio', rating:'8.62'},
+  'Link Click Season 2':      {eps:'10 eps', year:'2023', studio:'LAN Studio', rating:'9.10'},
+  'Summertime Render':        {eps:'25 eps', year:'2022', studio:'OLM', rating:'8.63'},
+  'Bungou Stray Dogs':        {eps:'12 eps', year:'2016', studio:'Bones', rating:'7.97'},
+  'Bungou Stray Dogs Season 2':{eps:'12 eps',year:'2016',studio:'Bones', rating:'8.23'},
+  'Bungou Stray Dogs Season 3':{eps:'12 eps',year:'2019',studio:'Bones', rating:'8.41'},
+  'Durarara':                 {eps:'24 eps', year:'2010', studio:'Brains Base', rating:'8.14'},
+  'Baccano':                  {eps:'13 eps', year:'2007', studio:'Brains Base', rating:'8.39'},
+  'Gangsta':                  {eps:'12 eps', year:'2015', studio:'Manglobe', rating:'7.47'},
+  'Kabaneri of the Iron Fortress':{eps:'12 eps',year:'2016',studio:'Wit Studio', rating:'7.55'},
+  'Sirius the Jaeger':        {eps:'12 eps', year:'2018', studio:'P.A. Works', rating:'7.55'},
+  'Mirai Nikki':              {eps:'26 eps', year:'2011', studio:'Asread', rating:'7.51'},
+  'Another':                  {eps:'12 eps', year:'2012', studio:'P.A. Works', rating:'7.48'},
+  'When They Cry':            {eps:'26 eps', year:'2006', studio:'Deen', rating:'7.91'},
+  'Higurashi Gou':            {eps:'24 eps', year:'2020', studio:'Passione', rating:'7.38'},
+  'Garden of Sinners':        {eps:'Movie',  year:'2007', studio:'ufotable', rating:'7.78'},
+  'Akudama Drive':            {eps:'12 eps', year:'2020', studio:'Studio Pierrot', rating:'7.99'},
+  'Moriarty the Patriot':     {eps:'11 eps', year:'2020', studio:'Production I.G', rating:'7.97'},
+  'Boogiepop and Others':     {eps:'18 eps', year:'2019', studio:'Madhouse', rating:'7.02'},
+  // Comedy
+  'Gintama':                  {eps:'367 eps',year:'2006', studio:'Sunrise', rating:'9.05'},
+  'KonoSuba':                 {eps:'10 eps', year:'2016', studio:'Deen', rating:'8.15'},
+  'Assassination Classroom':  {eps:'47 eps', year:'2015', studio:'Lerche', rating:'8.11'},
+  'Cells at Work':            {eps:'13 eps', year:'2018', studio:'David Production', rating:'7.67'},
+  'Cells at Work Black':      {eps:'13 eps', year:'2021', studio:'Liden Films', rating:'7.52'},
+  'Ouran High School Host Club':{eps:'26 eps',year:'2006',studio:'Bones', rating:'8.19'},
+  'Disastrous Life of Saiki K':{eps:'120 eps',year:'2016',studio:'Egg Firm', rating:'8.55'},
+  'Saiki K Reawakened':       {eps:'6 eps',  year:'2019', studio:'Egg Firm', rating:'8.52'},
+  'Nichijou':                 {eps:'26 eps', year:'2011', studio:'Kyoto Animation', rating:'8.47'},
+  'Azumanga Daioh':           {eps:'26 eps', year:'2002', studio:'J.C.Staff', rating:'7.76'},
+  'Lucky Star':               {eps:'24 eps', year:'2007', studio:'Kyoto Animation', rating:'7.62'},
+  'Haruhi Suzumiya':          {eps:'14 eps', year:'2006', studio:'Kyoto Animation', rating:'8.01'},
+  'Chuunibyou':               {eps:'12 eps', year:'2012', studio:'Kyoto Animation', rating:'7.95'},
+  'Daily Lives of High School Boys':{eps:'12 eps',year:'2012',studio:'Sunrise', rating:'8.23'},
+  'Grand Blue':               {eps:'12 eps', year:'2018', studio:'Zero-G', rating:'8.38'},
+  'Asobi Asobase':            {eps:'12 eps', year:'2018', studio:'Lerche', rating:'7.98'},
+  'Aggretsuko':               {eps:'10 eps', year:'2018', studio:'Fanworks', rating:'7.70'},
+  'Aggretsuko Season 2':      {eps:'10 eps', year:'2019', studio:'Fanworks', rating:'7.72'},
+  'Shirobako':                {eps:'24 eps', year:'2014', studio:'P.A. Works', rating:'8.61'},
+  'Wagnaria':                 {eps:'13 eps', year:'2010', studio:'A-1 Pictures', rating:'7.86'},
+  'Great Teacher Onizuka':    {eps:'43 eps', year:'1999', studio:'Pierrot', rating:'8.75'},
+  'Golden Boy':               {eps:'6 eps',  year:'1995', studio:'APPP', rating:'7.91'},
+  'FLCL':                     {eps:'6 eps',  year:'2000', studio:'Gainax', rating:'7.93'},
+  'D-Frag':                   {eps:'12 eps', year:'2014', studio:'Brain\'s Base', rating:'7.93'},
+  'Aho-Girl':                 {eps:'12 eps', year:'2017', studio:'Diomedea', rating:'7.02'},
+  'Himouto Umaru-chan':        {eps:'12 eps', year:'2015', studio:'Doga Kobo', rating:'7.40'},
+  'Bocchi the Rock':          {eps:'12 eps', year:'2022', studio:'CloverWorks', rating:'8.89'},
+  'Yuru Camp':                {eps:'13 eps', year:'2018', studio:'C-Station', rating:'8.26'},
+  'Non Non Biyori':           {eps:'12 eps', year:'2013', studio:'Silver Link', rating:'8.25'},
+  'School Rumble':            {eps:'26 eps', year:'2004', studio:'Studio Comet', rating:'7.93'},
+  'Pop Team Epic':            {eps:'12 eps', year:'2018', studio:'Kamikaze Douga', rating:'7.31'},
+  'Jashin-chan Dropkick':     {eps:'11 eps', year:'2018', studio:'Nomad', rating:'7.06'},
+  'Komi Can\'t Communicate': {eps:'12 eps', year:'2021', studio:'OLM', rating:'7.90'},
+  'My Dress-Up Darling':      {eps:'12 eps', year:'2022', studio:'CloverWorks', rating:'8.37'},
+  'Lycoris Recoil':           {eps:'13 eps', year:'2022', studio:'A-1 Pictures', rating:'8.07'},
+  'Monthly Girls Nozaki-kun': {eps:'12 eps', year:'2014', studio:'Doga Kobo', rating:'8.00'},
+  // Sci-Fi
+  'Cowboy Bebop':             {eps:'26 eps', year:'1998', studio:'Sunrise', rating:'8.75'},
+  "Steins;Gate":              {eps:'24 eps', year:'2011', studio:'White Fox', rating:'9.08'},
+  'Steins Gate 0':            {eps:'23 eps', year:'2018', studio:'White Fox', rating:'8.04'},
+  'Neon Genesis Evangelion':  {eps:'26 eps', year:'1995', studio:'Gainax', rating:'8.35'},
+  'End of Evangelion':        {eps:'Movie',  year:'1997', studio:'Gainax', rating:'8.62'},
+  'Ghost in the Shell':       {eps:'Movie',  year:'1995', studio:'Production I.G', rating:'8.27'},
+  'Ghost in the Shell SAC':   {eps:'26 eps', year:'2002', studio:'Production I.G', rating:'8.39'},
+  'Ghost in the Shell SAC 2045':{eps:'12 eps',year:'2020',studio:'Production I.G', rating:'6.47'},
+  'Akira':                    {eps:'Movie',  year:'1988', studio:'TMS Entertainment', rating:'8.14'},
+  'Paprika':                  {eps:'Movie',  year:'2006', studio:'Madhouse', rating:'8.10'},
+  'Perfect Blue':             {eps:'Movie',  year:'1997', studio:'Madhouse', rating:'8.59'},
+  'Millennium Actress':       {eps:'Movie',  year:'2001', studio:'Madhouse', rating:'8.32'},
+  'Paranoia Agent':           {eps:'13 eps', year:'2004', studio:'Madhouse', rating:'7.93'},
+  'Serial Experiments Lain':  {eps:'13 eps', year:'1998', studio:'Triangle Staff', rating:'8.06'},
+  'Texhnolyze':               {eps:'22 eps', year:'2003', studio:'Madhouse', rating:'7.70'},
+  'Haibane Renmei':           {eps:'13 eps', year:'2002', studio:'Radix', rating:'8.09'},
+  'Ergo Proxy':               {eps:'23 eps', year:'2006', studio:'Manglobe', rating:'7.95'},
+  'Planetes':                 {eps:'26 eps', year:'2003', studio:'Sunrise', rating:'8.44'},
+  'Legend of Galactic Heroes':{eps:'110 eps',year:'1988',studio:'Kitty Films', rating:'9.03'},
+  'Aria the Animation':       {eps:'13 eps', year:'2005', studio:'Hal Film Maker', rating:'8.11'},
+  'Space Battleship Yamato 2199':{eps:'26 eps',year:'2012',studio:'Xebec/AIC', rating:'8.31'},
+  'Macross Frontier':         {eps:'25 eps', year:'2008', studio:'Satelight', rating:'7.97'},
+  'Macross Delta':            {eps:'26 eps', year:'2016', studio:'Satelight', rating:'7.21'},
+  'Darling in the FranXX':    {eps:'24 eps', year:'2018', studio:'Trigger/A-1', rating:'7.27'},
+  'Aldnoah Zero':             {eps:'12 eps', year:'2014', studio:'A-1 Pictures', rating:'7.56'},
+  '86':                       {eps:'11 eps', year:'2021', studio:'A-1 Pictures', rating:'8.46'},
+  '86 Season 2':              {eps:'12 eps', year:'2021', studio:'A-1 Pictures', rating:'8.44'},
+  'Vivy Fluorite Eyes Song':  {eps:'13 eps', year:'2021', studio:'Wit Studio', rating:'8.27'},
+  'Cyberpunk Edgerunners':    {eps:'10 eps', year:'2022', studio:'Trigger', rating:'8.60'},
+  'Dr Stone':                 {eps:'24 eps', year:'2019', studio:'TMS Entertainment', rating:'8.27'},
+  'Dr Stone Season 2':        {eps:'11 eps', year:'2021', studio:'TMS Entertainment', rating:'8.19'},
+  'Gurren Lagann':            {eps:'27 eps', year:'2007', studio:'Gainax', rating:'8.63'},
+  'Code Geass':               {eps:'25 eps', year:'2006', studio:'Sunrise', rating:'8.73'},
+  'Code Geass Season 2':      {eps:'25 eps', year:'2008', studio:'Sunrise', rating:'8.93'},
+  'SSSS Gridman':             {eps:'12 eps', year:'2018', studio:'Trigger', rating:'7.96'},
+  'SSSS Dynazenon':           {eps:'12 eps', year:'2021', studio:'Trigger', rating:'7.83'},
+  'ID Invaded':               {eps:'13 eps', year:'2020', studio:'NAZ', rating:'8.14'},
+  'Promare':                  {eps:'Movie',  year:'2019', studio:'Trigger', rating:'7.94'},
+  'Blue Lock':                {eps:'24 eps', year:'2022', studio:'Eight Bit', rating:'8.32'},
+  'Gunbuster':                {eps:'6 eps',  year:'1988', studio:'Gainax', rating:'7.98'},
+  // Sports
+  'Haikyuu!!':                {eps:'85 eps', year:'2014', studio:'Production I.G', rating:'9.07'},
+  'Haikyuu':                  {eps:'85 eps', year:'2014', studio:'Production I.G', rating:'9.07'},
+  'Haikyuu Season 2':         {eps:'25 eps', year:'2015', studio:'Production I.G', rating:'8.84'},
+  'Haikyuu Season 3':         {eps:'10 eps', year:'2016', studio:'Production I.G', rating:'8.79'},
+  'Haikyuu Season 4':         {eps:'25 eps', year:'2020', studio:'Production I.G', rating:'8.73'},
+  'Slam Dunk':                {eps:'101 eps',year:'1993', studio:'Toei Animation', rating:'8.57'},
+  'Slam Dunk 2022':           {eps:'Movie',  year:'2022', studio:'Toei Animation', rating:'9.06'},
+  'Kuroko Basketball':        {eps:'25 eps', year:'2012', studio:'Production I.G', rating:'8.19'},
+  'Kuroko Basketball Season 2':{eps:'25 eps',year:'2013',studio:'Production I.G', rating:'8.33'},
+  'Kuroko Basketball Season 3':{eps:'25 eps',year:'2015',studio:'Production I.G', rating:'8.43'},
+  'Yuri on Ice':              {eps:'12 eps', year:'2016', studio:'MAPPA', rating:'7.87'},
+  'Ping Pong the Animation':  {eps:'11 eps', year:'2014', studio:'Tatsunoko Production', rating:'8.65'},
+  'Ashita no Joe':            {eps:'79 eps', year:'1970', studio:'Mushi Production', rating:'8.27'},
+  'Hajime no Ippo':           {eps:'75 eps', year:'2000', studio:'Madhouse', rating:'8.80'},
+  'Hajime no Ippo New Challenger':{eps:'26 eps',year:'2009',studio:'Madhouse', rating:'8.68'},
+  'Major':                    {eps:'26 eps', year:'2004', studio:'NHK Enterprises', rating:'8.11'},
+  'Major 2nd':                {eps:'25 eps', year:'2018', studio:'NHK Enterprises', rating:'7.67'},
+  'Ace of Diamond':           {eps:'75 eps', year:'2013', studio:'Madhouse', rating:'8.08'},
+  'Ace of Diamond Act II':    {eps:'52 eps', year:'2019', studio:'Madhouse', rating:'8.15'},
+  'Chihayafuru':              {eps:'25 eps', year:'2011', studio:'Madhouse', rating:'8.39'},
+  'Chihayafuru Season 2':     {eps:'25 eps', year:'2013', studio:'Madhouse', rating:'8.53'},
+  'Chihayafuru Season 3':     {eps:'24 eps', year:'2019', studio:'Madhouse', rating:'8.51'},
+  'Prince of Tennis':         {eps:'178 eps',year:'2001', studio:'Trans Arts', rating:'7.77'},
+  'Eyeshield 21':             {eps:'145 eps',year:'2005', studio:'Gallop', rating:'7.83'},
+  'Giant Killing':            {eps:'26 eps', year:'2010', studio:'Studio Deen', rating:'7.82'},
+  'Baby Steps':               {eps:'25 eps', year:'2014', studio:'Pierrot', rating:'7.66'},
+  'Hanebado':                 {eps:'13 eps', year:'2018', studio:'Liden Films', rating:'7.30'},
+  'Run with the Wind':        {eps:'23 eps', year:'2018', studio:'Production I.G', rating:'8.73'},
+  'Welcome to the Ballroom':  {eps:'24 eps', year:'2017', studio:'Production I.G', rating:'7.60'},
+  'Baki':                     {eps:'26 eps', year:'2018', studio:'TMS Entertainment', rating:'7.60'},
+  'Baki Hanma':               {eps:'13 eps', year:'2021', studio:'TMS Entertainment', rating:'7.75'},
+  'Kengan Ashura':            {eps:'24 eps', year:'2019', studio:'Larx Entertainment', rating:'7.62'},
+  'Kengan Ashura Season 2':   {eps:'12 eps', year:'2019', studio:'Larx Entertainment', rating:'7.64'},
+  'Inazuma Eleven':           {eps:'127 eps',year:'2008', studio:'OLM', rating:'7.37'},
+  'Captain Tsubasa 2018':     {eps:'52 eps', year:'2018', studio:'David Production', rating:'7.34'},
+  'Free':                     {eps:'12 eps', year:'2013', studio:'Kyoto Animation', rating:'7.37'},
+  'Free Eternal Summer':      {eps:'13 eps', year:'2014', studio:'Kyoto Animation', rating:'7.61'},
+  'Megalo Box':               {eps:'13 eps', year:'2018', studio:'TMS Entertainment', rating:'8.05'},
+  'Megalo Box 2 Nomad':       {eps:'13 eps', year:'2021', studio:'TMS Entertainment', rating:'8.45'},
+  'Tsurune':                  {eps:'13 eps', year:'2018', studio:'Kyoto Animation', rating:'7.81'},
+  'Ahiru no Sora':            {eps:'50 eps', year:'2019', studio:'Diomedea', rating:'7.40'},
+  'Stars Align':              {eps:'12 eps', year:'2019', studio:'8bit', rating:'7.97'},
+  // Slice of Life
+  'K-On':                     {eps:'13 eps', year:'2009', studio:'Kyoto Animation', rating:'8.11'},
+  'K-On Season 2':            {eps:'26 eps', year:'2010', studio:'Kyoto Animation', rating:'8.54'},
+  'Barakamon':                {eps:'12 eps', year:'2014', studio:'Kinema Citrus', rating:'8.34'},
+  'Natsumes Book of Friends': {eps:'13 eps', year:'2008', studio:'Brain\'s Base', rating:'8.59'},
+  'Natsumes Book Season 2':   {eps:'13 eps', year:'2009', studio:'Brain\'s Base', rating:'8.65'},
+  'Natsumes Book Season 3':   {eps:'13 eps', year:'2011', studio:'Brain\'s Base', rating:'8.69'},
+  'Mushishi':                 {eps:'26 eps', year:'2005', studio:'Artland', rating:'8.73'},
+  'Mushishi Zoku Shou':       {eps:'20 eps', year:'2014', studio:'Artland', rating:'8.78'},
+  'Spice and Wolf':           {eps:'13 eps', year:'2008', studio:'Imagin', rating:'8.25'},
+  'Spice and Wolf 2024':      {eps:'12 eps', year:'2024', studio:'Passione', rating:'8.39'},
+  'Yuru Camp':                {eps:'13 eps', year:'2018', studio:'C-Station', rating:'8.26'},
+  'Yuru Camp Season 2':       {eps:'13 eps', year:'2021', studio:'C-Station', rating:'8.62'},
+  'Non Non Biyori':           {eps:'12 eps', year:'2013', studio:'Silver Link', rating:'8.25'},
+  'Non Non Biyori Repeat':    {eps:'12 eps', year:'2015', studio:'Silver Link', rating:'8.35'},
+  'A Place Further than the Universe':{eps:'13 eps',year:'2018',studio:'Madhouse', rating:'8.72'},
+  'March Comes in Like a Lion':{eps:'22 eps',year:'2016',studio:'Shaft', rating:'8.50'},
+  'March Comes in Like a Lion Season 2':{eps:'22 eps',year:'2017',studio:'Shaft', rating:'8.89'},
+  'Shirobako':                {eps:'24 eps', year:'2014', studio:'P.A. Works', rating:'8.61'},
+  'New Game':                 {eps:'12 eps', year:'2016', studio:'Doga Kobo', rating:'7.57'},
+  'New Game Season 2':        {eps:'12 eps', year:'2017', studio:'Doga Kobo', rating:'7.88'},
+  'Aria the Animation':       {eps:'13 eps', year:'2005', studio:'Hal Film Maker', rating:'8.11'},
+  'Honey and Clover':         {eps:'24 eps', year:'2005', studio:'J.C.Staff', rating:'7.98'},
+  'Anohana':                  {eps:'11 eps', year:'2011', studio:'A-1 Pictures', rating:'8.45'},
+  'Angel Beats':              {eps:'13 eps', year:'2010', studio:'P.A. Works', rating:'7.87'},
+  'Charlotte':                {eps:'13 eps', year:'2015', studio:'P.A. Works', rating:'7.79'},
+  'Plastic Memories':         {eps:'13 eps', year:'2015', studio:'Doga Kobo', rating:'7.41'},
+  'Sound Euphonium':          {eps:'13 eps', year:'2015', studio:'Kyoto Animation', rating:'8.47'},
+  'Sound Euphonium Season 2': {eps:'13 eps', year:'2016', studio:'Kyoto Animation', rating:'8.64'},
+  'Hyouka':                   {eps:'22 eps', year:'2012', studio:'Kyoto Animation', rating:'8.18'},
+  'Golden Time':              {eps:'24 eps', year:'2013', studio:'J.C.Staff', rating:'7.74'},
+  'Silver Spoon':             {eps:'11 eps', year:'2013', studio:'A-1 Pictures', rating:'8.53'},
+  'Usagi Drop':               {eps:'11 eps', year:'2011', studio:'Production I.G', rating:'8.43'},
+  'The Tatami Galaxy':        {eps:'11 eps', year:'2010', studio:'Madhouse', rating:'8.57'},
+  'The Eccentric Family':     {eps:'13 eps', year:'2013', studio:'P.A. Works', rating:'8.18'},
+  "Kino's Journey":           {eps:'13 eps', year:'2003', studio:'A.C.G.T.', rating:'8.16'},
+  'Hanasaku Iroha':           {eps:'26 eps', year:'2011', studio:'P.A. Works', rating:'7.88'},
+  'Bocchi the Rock':          {eps:'12 eps', year:'2022', studio:'CloverWorks', rating:'8.89'},
+  "Komi Can't Communicate":   {eps:'12 eps', year:'2021', studio:'OLM', rating:'7.90'},
+  'Flying Witch':             {eps:'12 eps', year:'2016', studio:'J.C.Staff', rating:'7.85'},
+  'Do It Yourself':           {eps:'12 eps', year:'2022', studio:'Pine Jam', rating:'7.81'},
+  'Laid-Back Camp Season 3':  {eps:'12 eps', year:'2024', studio:'C-Station', rating:'8.81'},
+  // Horror
+  'Tokyo Ghoul':              {eps:'12 eps', year:'2014', studio:'Pierrot', rating:'7.91'},
+  'Tokyo Ghoul Root A':       {eps:'12 eps', year:'2015', studio:'Pierrot', rating:'6.70'},
+  'Higurashi When They Cry':  {eps:'26 eps', year:'2006', studio:'Studio Deen', rating:'7.91'},
+  'Higurashi Gou':            {eps:'24 eps', year:'2020', studio:'Passione', rating:'7.38'},
+  'Another':                  {eps:'12 eps', year:'2012', studio:'P.A. Works', rating:'7.48'},
+  'Elfen Lied':               {eps:'13 eps', year:'2004', studio:'Arms', rating:'7.54'},
+  'Mirai Nikki':              {eps:'26 eps', year:'2011', studio:'Asread', rating:'7.51'},
+  'Deadman Wonderland':       {eps:'12 eps', year:'2011', studio:'Manglobe', rating:'7.23'},
+  'Parasyte':                 {eps:'24 eps', year:'2014', studio:'Madhouse', rating:'8.36'},
+  'Devilman Crybaby':         {eps:'10 eps', year:'2018', studio:'Science SARU', rating:'7.74'},
+  'Yamishibai':               {eps:'13 eps', year:'2013', studio:'ILCA', rating:'6.98'},
+  'Mieruko-chan':             {eps:'12 eps', year:'2021', studio:'Passione', rating:'7.63'},
+  'Toilet-Bound Hanako-kun':  {eps:'12 eps', year:'2020', studio:'Lerche', rating:'7.89'},
+  'Shadows House':            {eps:'13 eps', year:'2021', studio:'CloverWorks', rating:'7.88'},
+  'Shadows House Season 2':   {eps:'12 eps', year:'2022', studio:'CloverWorks', rating:'7.94'},
+  'The Promised Neverland':   {eps:'12 eps', year:'2019', studio:'CloverWorks', rating:'8.36'},
+  'Dusk Maiden of Amnesia':   {eps:'12 eps', year:'2012', studio:'Feel', rating:'7.89'},
+  'School-Live':              {eps:'12 eps', year:'2015', studio:'Lerche', rating:'7.65'},
+  'Shiki':                    {eps:'22 eps', year:'2010', studio:'Daume', rating:'8.17'},
+  'Berserk 1997':             {eps:'25 eps', year:'1997', studio:'OLM', rating:'8.63'},
+  'Chainsaw Man':             {eps:'12 eps', year:'2022', studio:'MAPPA', rating:'8.62'},
+  'Jujutsu Kaisen':           {eps:'48 eps', year:'2020', studio:'MAPPA', rating:'8.62'},
+  'Demon Slayer':             {eps:'55 eps', year:'2019', studio:'ufotable', rating:'8.60'},
+  'Dororo':                   {eps:'24 eps', year:'2019', studio:'MAPPA/Tezuka Production', rating:'8.13'},
+  'Inuyashiki':               {eps:'11 eps', year:'2017', studio:'MAPPA', rating:'7.70'},
+  'Made in Abyss':            {eps:'13 eps', year:'2017', studio:'Kinema Citrus', rating:'8.65'},
+  'Attack on Titan':          {eps:'87 eps', year:'2013', studio:'Wit Studio/MAPPA', rating:'9.08'},
+  'Kabaneri Iron Fortress':   {eps:'12 eps', year:'2016', studio:'Wit Studio', rating:'7.55'},
+  'Blood-C':                  {eps:'12 eps', year:'2011', studio:'Production I.G', rating:'6.20'},
+  'Blood+':                   {eps:'50 eps', year:'2005', studio:'Production I.G', rating:'7.56'},
+  'Ga-Rei Zero':              {eps:'12 eps', year:'2008', studio:'AIC ASTA', rating:'7.74'},
+  'Magical Girl Site':        {eps:'12 eps', year:'2018', studio:'Production doA', rating:'6.42'},
+  'Magical Girl Raising Project':{eps:'12 eps',year:'2016',studio:'Lerche', rating:'7.18'},
+  'Gleipnir':                 {eps:'13 eps', year:'2020', studio:'Pine Jam', rating:'7.34'},
+  // Mecha
+  'Neon Genesis Evangelion':  {eps:'26 eps', year:'1995', studio:'Gainax', rating:'8.35'},
+  'Mobile Suit Gundam':       {eps:'43 eps', year:'1979', studio:'Sunrise', rating:'7.81'},
+  'Mobile Suit Zeta Gundam':  {eps:'50 eps', year:'1985', studio:'Sunrise', rating:'8.07'},
+  'Chars Counterattack':      {eps:'Movie',  year:'1988', studio:'Sunrise', rating:'7.98'},
+  'Gundam 08th MS Team':      {eps:'12 eps', year:'1996', studio:'Sunrise', rating:'8.06'},
+  'Gundam Wing':              {eps:'49 eps', year:'1995', studio:'Sunrise', rating:'7.72'},
+  'Gundam SEED':              {eps:'50 eps', year:'2002', studio:'Sunrise', rating:'7.42'},
+  'Gundam SEED Destiny':      {eps:'50 eps', year:'2004', studio:'Sunrise', rating:'6.52'},
+  'Gundam 00':                {eps:'25 eps', year:'2007', studio:'Sunrise', rating:'7.83'},
+  'Gundam Iron-Blooded Orphans':{eps:'25 eps',year:'2015',studio:'Sunrise', rating:'8.20'},
+  'Gundam IBO Season 2':      {eps:'25 eps', year:'2016', studio:'Sunrise', rating:'8.11'},
+  'Gundam Witch from Mercury':{eps:'12 eps', year:'2022', studio:'Sunrise', rating:'8.41'},
+  'Gundam Witch Season 2':    {eps:'12 eps', year:'2023', studio:'Sunrise', rating:'8.74'},
+  'Gurren Lagann':            {eps:'27 eps', year:'2007', studio:'Gainax', rating:'8.63'},
+  'Code Geass':               {eps:'25 eps', year:'2006', studio:'Sunrise', rating:'8.73'},
+  'Code Geass Season 2':      {eps:'25 eps', year:'2008', studio:'Sunrise', rating:'8.93'},
+  'Macross Plus':             {eps:'4 eps',  year:'1994', studio:'Triangle Staff', rating:'7.80'},
+  'Macross Frontier':         {eps:'25 eps', year:'2008', studio:'Satelight', rating:'7.97'},
+  'SSSS Gridman':             {eps:'12 eps', year:'2018', studio:'Trigger', rating:'7.96'},
+  'SSSS Dynazenon':           {eps:'12 eps', year:'2021', studio:'Trigger', rating:'7.83'},
+  'Darling in the FranXX':    {eps:'24 eps', year:'2018', studio:'Trigger/A-1', rating:'7.27'},
+  'Aldnoah Zero':             {eps:'12 eps', year:'2014', studio:'A-1 Pictures', rating:'7.56'},
+  'Full Metal Panic':         {eps:'24 eps', year:'2002', studio:'Gonzo', rating:'7.72'},
+  'Full Metal Panic Fumoffu':  {eps:'12 eps', year:'2003', studio:'Kyoto Animation', rating:'8.17'},
+  'Full Metal Panic Second Raid':{eps:'13 eps',year:'2005',studio:'Kyoto Animation', rating:'8.05'},
+  'Break Blade':              {eps:'6 eps',  year:'2010', studio:'Production I.G', rating:'7.71'},
+  'Eureka Seven':             {eps:'50 eps', year:'2005', studio:'Bones', rating:'8.01'},
+  'Rahxephon':                {eps:'26 eps', year:'2002', studio:'Bones', rating:'7.38'},
+  'Big O':                    {eps:'26 eps', year:'1999', studio:'Sunrise', rating:'7.58'},
+  'Escaflowne':               {eps:'26 eps', year:'1996', studio:'Sunrise', rating:'7.82'},
+  'Mazinger Z Infinity':      {eps:'Movie',  year:'2017', studio:'Toei Animation', rating:'7.29'},
+  'Knights and Magic':        {eps:'13 eps', year:'2017', studio:'8bit', rating:'7.27'},
+  'Infinite Stratos':         {eps:'12 eps', year:'2011', studio:'Eight Bit', rating:'6.99'},
+  'Majestic Prince':          {eps:'24 eps', year:'2013', studio:'Dogakobo/Orange', rating:'7.28'},
+  'Getter Robo Armageddon':   {eps:'13 eps', year:'1998', studio:'Brain\'s Base', rating:'7.34'}
+};
 var GENERATED=[];
 GENRES.forEach(function(g){
   var titles=TBG[g]||[];
   var em=EMOJIS[g];var co=COLORS[g];var th=TM[g];
   titles.forEach(function(title,i){
-    var yr=1990+Math.floor(Math.random()*35);
-    var rat=REAL_RATINGS[title]||(7.0+Math.random()*2.3).toFixed(1);
-    var ep=Math.random()<0.15?'Movie':(Math.floor(Math.random()*200+1))+' eps';
-    var st=STUDIOS[Math.floor(Math.random()*STUDIOS.length)];
+    var _ad=ACCURATE_DATA[title]||{};
+    var yr=_ad.year||(String(1990+Math.floor(Math.random()*35)));
+    var rat=_ad.rating||REAL_RATINGS[title]||(7.0+Math.random()*2.3).toFixed(1);
+    var ep=_ad.eps||(Math.random()<0.15?'Movie':(Math.floor(Math.random()*200+1))+' eps');
+    var st=_ad.studio||STUDIOS[Math.floor(Math.random()*STUDIOS.length)];
     var emoji=em[i%em.length];
     var color=co[i%co.length];
     var tT=th.slice().sort(function(){return 0.5-Math.random();}).slice(0,3+Math.floor(Math.random()*3));
@@ -1411,22 +2099,22 @@ GENRES.forEach(function(g){
       short:'A '+g.toLowerCase()+' anime about '+tT[0].toLowerCase()+'.',
       desc:title+' is a '+yr+' '+g.toLowerCase()+' anime by '+st+'. Themes: '+tT.join(', ')+'.',
       themes:tT,trailer:TRAILER_MAP[title]||null,platforms:plat,
-      cast:genCast(title,g,emoji,em,i,tT)
+      cast:ANIME_CAST_MAP[title]||genCast(title,g,emoji,em,i,tT)
     });
   });
 });
 
 var CORE=[
-  {id:1,title:'Attack on Titan',genre:'Action',emoji:'⚔️',color:'#8B0000',rating:'9.1',eps:'87 eps',year:'2013',studio:'Wit/MAPPA',trending:true,views:9800000,short:'Humanity fights titans from behind enormous walls.',desc:'Eren Yeager vows to kill every Titan after his mother is devoured when the walls are breached. Alongside Mikasa and Armin he joins the Survey Corps to uncover the terrifying truth. A masterpiece of political drama.',themes:['Survival','Freedom','War','Sacrifice','Politics'],trailer:'https://www.youtube.com/embed/MGRm4IzK1SQ',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Funimation',u:'https://funimation.com',i:'🟣'},{n:'Hulu',u:'https://hulu.com',i:'🟢'}],cast:[{name:'Eren Yeager',role:'Protagonist',emoji:'😤',type:'main',desc:'Hot-headed boy who vows to destroy all Titans.'},{name:'Mikasa Ackerman',role:'Soldier',emoji:'🗡️',type:'main',desc:'Humanity\'s strongest female soldier.'},{name:'Armin Arlert',role:'Strategist',emoji:'📖',type:'main',desc:'Brilliant tactician whose intelligence saves humanity.'},{name:'Levi Ackerman',role:'Captain',emoji:'🧹',type:'main',desc:'Humanity\'s strongest soldier — cold and precise.'},{name:'Erwin Smith',role:'Commander',emoji:'🎖️',type:'support',desc:'Commander who sacrifices everything for the truth.'}]},
-  {id:2,title:'Demon Slayer',genre:'Action',emoji:'🗡️',color:'#1a0a2e',rating:'8.9',eps:'44 eps',year:'2019',studio:'ufotable',trending:true,views:9500000,short:'A kind boy becomes a demon slayer to cure his demon-turned sister.',desc:'Tanjiro Kamado joins the Demon Slayer Corps after his family is killed and sister turned into a demon. ufotable\'s breathtaking animation made the Mugen Train arc the highest-grossing anime film ever.',themes:['Family','Revenge','Perseverance','Compassion'],trailer:'https://www.youtube.com/embed/VQGCKyvzIM4',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Tanjiro Kamado',role:'Protagonist',emoji:'🌊',type:'main',desc:'Kind-hearted slayer using Water and Sun Breathing.'},{name:'Nezuko Kamado',role:'Demon Sister',emoji:'🌸',type:'main',desc:'Tanjiro\'s sister who retains her humanity as a demon.'},{name:'Zenitsu Agatsuma',role:'Slayer',emoji:'⚡',type:'main',desc:'Cowardly but devastating with Thunder Breathing.'},{name:'Inosuke Hashibira',role:'Slayer',emoji:'🐗',type:'main',desc:'Wild boar-masked fighter using Beast Breathing.'},{name:'Giyu Tomioka',role:'Water Hashira',emoji:'💧',type:'support',desc:'Stoic Hashira who sets the story in motion.'}]},
-  {id:3,title:'Fullmetal Alchemist: Brotherhood',genre:'Fantasy',emoji:'⚗️',color:'#2a1800',rating:'9.1',eps:'64 eps',year:'2009',studio:'Bones',trending:false,views:9200000,short:'Two brothers sacrifice everything seeking the Philosopher\'s Stone.',desc:'Edward and Alphonse Elric search for the Philosopher\'s Stone after a failed alchemy experiment costs them their bodies. Widely considered one of the greatest anime ever made.',themes:['Sacrifice','Equivalent Exchange','Family','Humanity'],trailer:'https://www.youtube.com/embed/--IcmZkvL0Q',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Edward Elric',role:'Protagonist',emoji:'⚡',type:'main',desc:'Short-tempered genius alchemist.'},{name:'Alphonse Elric',role:'Protagonist',emoji:'🛡️',type:'main',desc:'Gentle soul trapped in a suit of armour.'},{name:'Roy Mustang',role:'Colonel',emoji:'🔥',type:'main',desc:'Ambitious colonel who dreams of reforming the state.'},{name:'Father',role:'Antagonist',emoji:'👁️',type:'support',desc:'Ancient being seeking to absorb God.'}]},
-  {id:4,title:'Death Note',genre:'Thriller',emoji:'📓',color:'#0a0a1a',rating:'9.0',eps:'37 eps',year:'2006',studio:'Madhouse',trending:false,views:8900000,short:'A genius uses a death notebook to become god of the new world.',desc:'Light Yagami discovers a notebook that kills anyone whose name is written inside. A legendary cat-and-mouse thriller between two genius minds.',themes:['Justice','Power','Morality','God Complex'],trailer:'https://www.youtube.com/embed/NlJZ7sS6a2k',platforms:[{n:'Netflix',u:'https://netflix.com',i:'🔴'},{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'}],cast:[{name:'Light Yagami',role:'Protagonist',emoji:'📖',type:'main',desc:'Genius student turned god of the new world.'},{name:'L Lawliet',role:'Detective',emoji:'🍰',type:'main',desc:'World\'s greatest detective; Light\'s rival.'},{name:'Ryuk',role:'Death God',emoji:'🍎',type:'main',desc:'Shinigami who dropped the Death Note.'},{name:'Misa Amane',role:'Second Kira',emoji:'🖤',type:'support',desc:'Pop idol with her own Death Note.'}]},
-  {id:5,title:'Your Lie in April',genre:'Romance',emoji:'🎹',color:'#1a0a2e',rating:'8.7',eps:'22 eps',year:'2014',studio:'A-1 Pictures',trending:false,views:7800000,short:'A pianist rediscovers music through a free-spirited violinist.',desc:'Kousei Arima lost the ability to hear his playing after his mother\'s death. Violinist Kaori Miyazono drags him back into music and life. Devastatingly beautiful.',themes:['Music','Love','Loss','Grief','Courage'],trailer:'https://www.youtube.com/embed/vPN7rWa6bbM',platforms:[{n:'Netflix',u:'https://netflix.com',i:'🔴'},{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'}],cast:[{name:'Kousei Arima',role:'Protagonist',emoji:'🎹',type:'main',desc:'Former piano prodigy who cannot hear his own playing.'},{name:'Kaori Miyazono',role:'Violinist',emoji:'🎻',type:'main',desc:'Free-spirited violinist who pulls Kousei back to music.'}]},
-  {id:6,title:'Steins;Gate',genre:'Sci-Fi',emoji:'⏰',color:'#002a1a',rating:'9.1',eps:'24 eps',year:'2011',studio:'White Fox',trending:false,views:8500000,short:'A mad scientist accidentally invents time travel with catastrophic results.',desc:'Rintaro Okabe and his lab members discover time travel. When tragedy strikes he must relive death loops to save everyone. A slow-burn masterpiece.',themes:['Time Travel','Consequence','Love','Science'],trailer:'https://www.youtube.com/embed/27OZc-ku6is',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Funimation',u:'https://funimation.com',i:'🟣'}],cast:[{name:'Rintaro Okabe',role:'Protagonist',emoji:'🥼',type:'main',desc:'Mad scientist carrying the weight of every timeline.'},{name:'Kurisu Makise',role:'Scientist',emoji:'🧠',type:'main',desc:'Brilliant neuroscientist whose fate drives the story.'},{name:'Mayuri Shiina',role:'Lab Member',emoji:'🌸',type:'support',desc:'Cheerful childhood friend Okabe must protect.'}]},
-  {id:7,title:'One Punch Man',genre:'Action',emoji:'👊',color:'#1a1a00',rating:'8.8',eps:'24 eps',year:'2015',studio:'Madhouse',trending:true,views:8800000,short:'The world\'s strongest hero is bored — no one survives one punch.',desc:'Saitama became invincible after training too hard. A brilliant satire of superhero tropes with spectacular action.',themes:['Satire','Power','Purpose','Heroism'],trailer:'https://www.youtube.com/embed/0-0MpBBrS10',platforms:[{n:'Netflix',u:'https://netflix.com',i:'🔴'},{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'}],cast:[{name:'Saitama',role:'Protagonist',emoji:'👊',type:'main',desc:'Bald hero who destroys anything with one punch.'},{name:'Genos',role:'Cyborg',emoji:'🤖',type:'main',desc:'Powerful cyborg who becomes Saitama\'s disciple.'},{name:'Tatsumaki',role:'S-Class Hero',emoji:'🌪️',type:'support',desc:'Tiny but terrifyingly powerful telekinetic.'}]},
-  {id:8,title:'Haikyuu!!',genre:'Sports',emoji:'🏐',color:'#001a2a',rating:'9.0',eps:'85 eps',year:'2014',studio:'Production I.G',trending:true,views:8200000,short:'A short volleyball player and genius setter form an unstoppable team.',desc:'Hinata and Kageyama form an extraordinary partnership revitalising Karasuno. The most electrifying sports anime ever made.',themes:['Teamwork','Growth','Competition','Passion'],trailer:'https://www.youtube.com/embed/MBvPWRgXx34',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Shoyo Hinata',role:'Middle Blocker',emoji:'🌟',type:'main',desc:'Tiny, explosive player with extraordinary athleticism.'},{name:'Tobio Kageyama',role:'Setter',emoji:'👑',type:'main',desc:'Perfectionist genius setter.'},{name:'Kei Tsukishima',role:'Blocker',emoji:'😏',type:'support',desc:'Sarcastic genius blocker.'}]},
-  {id:9,title:'Hunter x Hunter',genre:'Action',emoji:'🎯',color:'#1a1a00',rating:'9.1',eps:'148 eps',year:'2011',studio:'Madhouse',trending:true,views:9100000,short:'A boy hunts for his legendary father and discovers the world\'s dark side.',desc:'Gon\'s journey evolves from bright adventure to anime\'s darkest narratives. The Chimera Ant arc is widely considered anime\'s greatest long-form storytelling.',themes:['Friendship','Power','Adventure','Darkness'],trailer:'https://www.youtube.com/embed/D9a9MH_bCo0',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Gon Freecss',role:'Protagonist',emoji:'🌿',type:'main',desc:'Pure-hearted boy with enormous hidden potential.'},{name:'Killua Zoldyck',role:'Assassin',emoji:'⚡',type:'main',desc:'Child assassin finding genuine friendship.'},{name:'Hisoka',role:'Wild Card',emoji:'🃏',type:'support',desc:'Psychopathic magician who fights purely for pleasure.'}]},
-  {id:10,title:'Spy x Family',genre:'Comedy',emoji:'🕵️',color:'#1a1500',rating:'8.6',eps:'37 eps',year:'2022',studio:'Wit/CloverWorks',trending:true,views:7600000,short:'A spy, assassin, and telepathic girl form the world\'s most chaotic family.',desc:'Master spy Loid, assassin Yor, and telepathic orphan Anya form a fake family — none know each other\'s secrets. Hilarious and heartwarming.',themes:['Found Family','Comedy','Secrets','Warmth'],trailer:'https://www.youtube.com/embed/V-SEET6bWi8',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Loid Forger',role:'Spy',emoji:'🕵️',type:'main',desc:'Elite spy who slowly cares for his fake family.'},{name:'Anya Forger',role:'Telepath',emoji:'😆',type:'main',desc:'Scene-stealing daughter who reads minds.'},{name:'Yor Forger',role:'Assassin',emoji:'🌹',type:'main',desc:'Deadly assassin and devoted mother figure.'}]}
+  {id:1,title:'Attack on Titan',genre:'Action',emoji:'⚔️',color:'#8B0000',rating:'9.08',eps:'87 eps',year:'2013',studio:'Wit Studio/MAPPA',trending:true,views:9800000,short:'Humanity fights titans from behind enormous walls.',desc:'Eren Yeager vows to kill every Titan after his mother is devoured when the walls are breached. Alongside Mikasa and Armin he joins the Survey Corps to uncover the terrifying truth. A masterpiece of political drama.',themes:['Survival','Freedom','War','Sacrifice','Politics'],trailer:'https://www.youtube.com/embed/MGRm4IzK1SQ',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Funimation',u:'https://funimation.com',i:'🟣'},{n:'Hulu',u:'https://hulu.com',i:'🟢'}],cast:[{name:'Eren Yeager',role:'Protagonist',emoji:'😤',type:'main',desc:'Hot-headed boy who vows to destroy all Titans.'},{name:'Mikasa Ackerman',role:'Soldier',emoji:'🗡️',type:'main',desc:'Humanity\'s strongest female soldier.'},{name:'Armin Arlert',role:'Strategist',emoji:'📖',type:'main',desc:'Brilliant tactician whose intelligence saves humanity.'},{name:'Levi Ackerman',role:'Captain',emoji:'🧹',type:'main',desc:'Humanity\'s strongest soldier — cold and precise.'},{name:'Erwin Smith',role:'Commander',emoji:'🎖️',type:'support',desc:'Commander who sacrifices everything for the truth.'}]},
+  {id:2,title:'Demon Slayer',genre:'Action',emoji:'🗡️',color:'#1a0a2e',rating:'8.60',eps:'55 eps',year:'2019',studio:'ufotable',trending:true,views:9500000,short:'A kind boy becomes a demon slayer to cure his demon-turned sister.',desc:'Tanjiro Kamado joins the Demon Slayer Corps after his family is killed and sister turned into a demon. ufotable\'s breathtaking animation made the Mugen Train arc the highest-grossing anime film ever.',themes:['Family','Revenge','Perseverance','Compassion'],trailer:'https://www.youtube.com/embed/VQGCKyvzIM4',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Tanjiro Kamado',role:'Protagonist',emoji:'🌊',type:'main',desc:'Kind-hearted slayer using Water and Sun Breathing.'},{name:'Nezuko Kamado',role:'Demon Sister',emoji:'🌸',type:'main',desc:'Tanjiro\'s sister who retains her humanity as a demon.'},{name:'Zenitsu Agatsuma',role:'Slayer',emoji:'⚡',type:'main',desc:'Cowardly but devastating with Thunder Breathing.'},{name:'Inosuke Hashibira',role:'Slayer',emoji:'🐗',type:'main',desc:'Wild boar-masked fighter using Beast Breathing.'},{name:'Giyu Tomioka',role:'Water Hashira',emoji:'💧',type:'support',desc:'Stoic Hashira who sets the story in motion.'}]},
+  {id:3,title:'Fullmetal Alchemist: Brotherhood',genre:'Fantasy',emoji:'⚗️',color:'#2a1800',rating:'9.08',eps:'64 eps',year:'2009',studio:'Bones',trending:false,views:9200000,short:'Two brothers sacrifice everything seeking the Philosopher\'s Stone.',desc:'Edward and Alphonse Elric search for the Philosopher\'s Stone after a failed alchemy experiment costs them their bodies. Widely considered one of the greatest anime ever made.',themes:['Sacrifice','Equivalent Exchange','Family','Humanity'],trailer:'https://www.youtube.com/embed/--IcmZkvL0Q',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Edward Elric',role:'Protagonist',emoji:'⚡',type:'main',desc:'Short-tempered genius alchemist.'},{name:'Alphonse Elric',role:'Protagonist',emoji:'🛡️',type:'main',desc:'Gentle soul trapped in a suit of armour.'},{name:'Roy Mustang',role:'Colonel',emoji:'🔥',type:'main',desc:'Ambitious colonel who dreams of reforming the state.'},{name:'Father',role:'Antagonist',emoji:'👁️',type:'support',desc:'Ancient being seeking to absorb God.'}]},
+  {id:4,title:'Death Note',genre:'Thriller',emoji:'📓',color:'#0a0a1a',rating:'8.62',eps:'37 eps',year:'2006',studio:'Madhouse',trending:false,views:8900000,short:'A genius uses a death notebook to become god of the new world.',desc:'Light Yagami discovers a notebook that kills anyone whose name is written inside. A legendary cat-and-mouse thriller between two genius minds.',themes:['Justice','Power','Morality','God Complex'],trailer:'https://www.youtube.com/embed/NlJZ7sS6a2k',platforms:[{n:'Netflix',u:'https://netflix.com',i:'🔴'},{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'}],cast:[{name:'Light Yagami',role:'Protagonist',emoji:'📖',type:'main',desc:'Genius student turned god of the new world.'},{name:'L Lawliet',role:'Detective',emoji:'🍰',type:'main',desc:'World\'s greatest detective; Light\'s rival.'},{name:'Ryuk',role:'Death God',emoji:'🍎',type:'main',desc:'Shinigami who dropped the Death Note.'},{name:'Misa Amane',role:'Second Kira',emoji:'🖤',type:'support',desc:'Pop idol with her own Death Note.'}]},
+  {id:5,title:'Your Lie in April',genre:'Romance',emoji:'🎹',color:'#1a0a2e',rating:'8.66',eps:'22 eps',year:'2014',studio:'A-1 Pictures',trending:false,views:7800000,short:'A pianist rediscovers music through a free-spirited violinist.',desc:'Kousei Arima lost the ability to hear his playing after his mother\'s death. Violinist Kaori Miyazono drags him back into music and life. Devastatingly beautiful.',themes:['Music','Love','Loss','Grief','Courage'],trailer:'https://www.youtube.com/embed/vPN7rWa6bbM',platforms:[{n:'Netflix',u:'https://netflix.com',i:'🔴'},{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'}],cast:[{name:'Kousei Arima',role:'Protagonist',emoji:'🎹',type:'main',desc:'Former piano prodigy who cannot hear his own playing.'},{name:'Kaori Miyazono',role:'Violinist',emoji:'🎻',type:'main',desc:'Free-spirited violinist who pulls Kousei back to music.'}]},
+  {id:6,title:'Steins;Gate',genre:'Sci-Fi',emoji:'⏰',color:'#002a1a',rating:'9.08',eps:'24 eps',year:'2011',studio:'White Fox',trending:false,views:8500000,short:'A mad scientist accidentally invents time travel with catastrophic results.',desc:'Rintaro Okabe and his lab members discover time travel. When tragedy strikes he must relive death loops to save everyone. A slow-burn masterpiece.',themes:['Time Travel','Consequence','Love','Science'],trailer:'https://www.youtube.com/embed/27OZc-ku6is',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Funimation',u:'https://funimation.com',i:'🟣'}],cast:[{name:'Rintaro Okabe',role:'Protagonist',emoji:'🥼',type:'main',desc:'Mad scientist carrying the weight of every timeline.'},{name:'Kurisu Makise',role:'Scientist',emoji:'🧠',type:'main',desc:'Brilliant neuroscientist whose fate drives the story.'},{name:'Mayuri Shiina',role:'Lab Member',emoji:'🌸',type:'support',desc:'Cheerful childhood friend Okabe must protect.'}]},
+  {id:7,title:'One Punch Man',genre:'Action',emoji:'👊',color:'#1a1a00',rating:'8.69',eps:'25 eps',year:'2015',studio:'Madhouse',trending:true,views:8800000,short:'The world\'s strongest hero is bored — no one survives one punch.',desc:'Saitama became invincible after training too hard. A brilliant satire of superhero tropes with spectacular action.',themes:['Satire','Power','Purpose','Heroism'],trailer:'https://www.youtube.com/embed/0-0MpBBrS10',platforms:[{n:'Netflix',u:'https://netflix.com',i:'🔴'},{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'}],cast:[{name:'Saitama',role:'Protagonist',emoji:'👊',type:'main',desc:'Bald hero who destroys anything with one punch.'},{name:'Genos',role:'Cyborg',emoji:'🤖',type:'main',desc:'Powerful cyborg who becomes Saitama\'s disciple.'},{name:'Tatsumaki',role:'S-Class Hero',emoji:'🌪️',type:'support',desc:'Tiny but terrifyingly powerful telekinetic.'}]},
+  {id:8,title:'Haikyuu!!',genre:'Sports',emoji:'🏐',color:'#001a2a',rating:'9.07',eps:'85 eps',year:'2014',studio:'Production I.G',trending:true,views:8200000,short:'A short volleyball player and genius setter form an unstoppable team.',desc:'Hinata and Kageyama form an extraordinary partnership revitalising Karasuno. The most electrifying sports anime ever made.',themes:['Teamwork','Growth','Competition','Passion'],trailer:'https://www.youtube.com/embed/MBvPWRgXx34',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Shoyo Hinata',role:'Middle Blocker',emoji:'🌟',type:'main',desc:'Tiny, explosive player with extraordinary athleticism.'},{name:'Tobio Kageyama',role:'Setter',emoji:'👑',type:'main',desc:'Perfectionist genius setter.'},{name:'Kei Tsukishima',role:'Blocker',emoji:'😏',type:'support',desc:'Sarcastic genius blocker.'}]},
+  {id:9,title:'Hunter x Hunter',genre:'Action',emoji:'🎯',color:'#1a1a00',rating:'9.05',eps:'148 eps',year:'2011',studio:'Madhouse',trending:true,views:9100000,short:'A boy hunts for his legendary father and discovers the world\'s dark side.',desc:'Gon\'s journey evolves from bright adventure to anime\'s darkest narratives. The Chimera Ant arc is widely considered anime\'s greatest long-form storytelling.',themes:['Friendship','Power','Adventure','Darkness'],trailer:'https://www.youtube.com/embed/D9a9MH_bCo0',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Gon Freecss',role:'Protagonist',emoji:'🌿',type:'main',desc:'Pure-hearted boy with enormous hidden potential.'},{name:'Killua Zoldyck',role:'Assassin',emoji:'⚡',type:'main',desc:'Child assassin finding genuine friendship.'},{name:'Hisoka',role:'Wild Card',emoji:'🃏',type:'support',desc:'Psychopathic magician who fights purely for pleasure.'}]},
+  {id:10,title:'Spy x Family',genre:'Comedy',emoji:'🕵️',color:'#1a1500',rating:'8.12',eps:'37 eps',year:'2022',studio:'Wit/CloverWorks',trending:true,views:7600000,short:'A spy, assassin, and telepathic girl form the world\'s most chaotic family.',desc:'Master spy Loid, assassin Yor, and telepathic orphan Anya form a fake family — none know each other\'s secrets. Hilarious and heartwarming.',themes:['Found Family','Comedy','Secrets','Warmth'],trailer:'https://www.youtube.com/embed/V-SEET6bWi8',platforms:[{n:'Crunchyroll',u:'https://crunchyroll.com',i:'🟠'},{n:'Netflix',u:'https://netflix.com',i:'🔴'}],cast:[{name:'Loid Forger',role:'Spy',emoji:'🕵️',type:'main',desc:'Elite spy who slowly cares for his fake family.'},{name:'Anya Forger',role:'Telepath',emoji:'😆',type:'main',desc:'Scene-stealing daughter who reads minds.'},{name:'Yor Forger',role:'Assassin',emoji:'🌹',type:'main',desc:'Deadly assassin and devoted mother figure.'}]}
 ];
 var DB=CORE.concat(GENERATED);
 
@@ -2581,7 +3269,7 @@ function openCharPage(animeId, charIndex){
   if(!c)return;
 
   // Generate portrait
-  var portrait=CHAR_IMG[c.name]||charPortrait(c,a.color,280,360);
+  var portrait=c.img||CHAR_IMG[c.name]||charPortrait(c,a.color,280,360);
 
   // Extra character content based on type
   var abilities=[];
@@ -2716,7 +3404,7 @@ function openDetail(id){
 
   // Character cards — clickable for full char page
   var castH=(a.cast||[]).map(function(c,idx){
-    var portrait=CHAR_IMG[c.name]||charPortrait(c,a.color,165,200);
+    var portrait=c.img||CHAR_IMG[c.name]||charPortrait(c,a.color,165,200);
     var badgeStyle=c.type==='main'?'background:rgba(108,99,255,.22);color:var(--pl);':'background:rgba(255,107,157,.2);color:var(--pink);';
     return ['<div class="char-card" onclick="openCharPage(',id,',',idx,')">',
       '<div class="char-img">',
