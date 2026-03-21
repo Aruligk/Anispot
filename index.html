@@ -470,6 +470,80 @@ body.light .det-topbar{background:rgba(245,244,255,.97);}
 .det-back-btn:hover{background:var(--p);border-color:var(--p);color:#fff;transform:translateX(-2px);}
 .det-back-arrow{font-size:16px;transition:transform .2s;}
 .det-back-btn:hover .det-back-arrow{transform:translateX(-3px);}
+
+/* ── DETAIL TOP BAR ── */
+.det-topbar{
+  position:sticky;top:var(--nh);z-index:100;
+  background:rgba(13,13,26,.96);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+body.light .det-topbar{background:rgba(245,244,255,.96);}
+.det-back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--text);border-radius:20px;padding:7px 16px;
+  font-size:13px;font-weight:700;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;font-family:'DM Sans',sans-serif;
+  transition:all .2s;
+}
+.det-back-btn:hover{border-color:var(--p);color:var(--pl);}
+.det-back-arrow{font-size:16px;}
+.det-topbar-right{
+  display:flex;align-items:center;gap:8px;
+  min-width:0;overflow:hidden;
+}
+.det-topbar-title{
+  font-size:12px;color:var(--t2);font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:140px;
+}
+@media(max-width:400px){.det-topbar-title{max-width:90px;font-size:11px;}}
+
+/* ── TOPBAR WATCHLIST FIX ── */
+.det-topbar .wl-btn{
+  position:static !important;
+  flex-shrink:0;
+  width:34px;height:34px;
+  bottom:auto;right:auto;
+  background:rgba(255,255,255,.15) !important;
+  border:2px solid rgba(255,255,255,.3) !important;
+  color:var(--pink) !important;
+}
+.det-topbar .wl-btn:hover{
+  background:var(--p) !important;
+  color:#fff !important;
+}
+.det-topbar .wl-btn.active{
+  background:var(--pink) !important;
+  color:#fff !important;
+}
+body.light .det-topbar .wl-btn{
+  background:rgba(108,99,255,.12) !important;
+  border:2px solid var(--p) !important;
+}
+.det-topbar-right{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex-shrink:0 !important;
+  overflow:visible !important;
+}
+.det-topbar-title{
+  font-size:12px;
+  color:var(--t2);
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:160px;
+  flex:1;
+  min-width:0;
+}
+@media(max-width:480px){.det-topbar-title{max-width:80px;font-size:11px;}}
+@media(max-width:380px){.det-topbar-title{display:none;}}
+
 </style>
 </head>
 <body>
@@ -961,13 +1035,369 @@ function genCast(title,genre,emoji,em,idx,themes){
   return cast;
 }
 
+
+// ── Trailer map for popular generated anime ──
+var TRAILER_MAP={
+  'Naruto':'https://www.youtube.com/embed/QczyDmMCIiY',
+  'Naruto Shippuden':'https://www.youtube.com/embed/yXtSHHhOPDg',
+  'Bleach':'https://www.youtube.com/embed/3g7TXJ9Kj7w',
+  'Bleach TYBW':'https://www.youtube.com/embed/IH3AUsVl3pY',
+  'One Piece':'https://www.youtube.com/embed/S8_YwFLCh4U',
+  'Dragon Ball Z':'https://www.youtube.com/embed/yUiilh5tRxY',
+  'Dragon Ball Super':'https://www.youtube.com/embed/9pFkjpBkBTw',
+  'My Hero Academia':'https://www.youtube.com/embed/EPVkcwyLQQ8',
+  'Jujutsu Kaisen':'https://www.youtube.com/embed/PKXGMoY0x0Q',
+  'Chainsaw Man':'https://www.youtube.com/embed/dSBW_x9GwXo',
+  'Mob Psycho 100':'https://www.youtube.com/embed/kePCqWYwVPk',
+  'Vinland Saga':'https://www.youtube.com/embed/4r7b5yjbiq4',
+  'Violet Evergarden':'https://www.youtube.com/embed/0CJeDetA45Q',
+  'Frieren Beyond Journey End':'https://www.youtube.com/embed/CXMFGPumTLQ',
+  'Dungeon Meshi':'https://www.youtube.com/embed/oT0CiUFWwOE',
+  'Bocchi the Rock':'https://www.youtube.com/embed/G_BPJY6juCs',
+  'Oshi no Ko':'https://www.youtube.com/embed/UPtgtQXGSI4',
+  'Blue Lock':'https://www.youtube.com/embed/JrWRqpd6Nss',
+  'Cyberpunk Edgerunners':'https://www.youtube.com/embed/HyMnTkIlCMY',
+  'Spy x Family':'https://www.youtube.com/embed/V-SEET6bWi8',
+  'Tokyo Revengers':'https://www.youtube.com/embed/crfcsgJz5HQ',
+  'Kaguya-sama Love is War':'https://www.youtube.com/embed/RzE4MBvGaAM',
+  'Lycoris Recoil':'https://www.youtube.com/embed/wMFAkMaEBsM',
+  'Gurren Lagann':'https://www.youtube.com/embed/BfnmGjKbFGE',
+  'Code Geass':'https://www.youtube.com/embed/tfx5qkBX0SI',
+  'Toradora':'https://www.youtube.com/embed/CEEFnCe_IuU',
+  'Horimiya':'https://www.youtube.com/embed/6HKXuDhQ8sQ',
+  'Clannad After Story':'https://www.youtube.com/embed/vu5T4V_BFHE',
+  'Your Lie in April':'https://www.youtube.com/embed/vPN7rWa6bbM',
+  'Fruits Basket':'https://www.youtube.com/embed/3piHUY3Kpf4',
+  'Banana Fish':'https://www.youtube.com/embed/TlEkR5zKiME',
+  'Given':'https://www.youtube.com/embed/eQDfJJCTgfQ',
+  'Yuri on Ice':'https://www.youtube.com/embed/G2gPJKhQZAo',
+  'Haikyuu':'https://www.youtube.com/embed/MBvPWRgXx34',
+  'Ping Pong the Animation':'https://www.youtube.com/embed/qpJaqF3QbvU',
+  'Run with the Wind':'https://www.youtube.com/embed/sQmYaJYHnxA',
+  'Slam Dunk 2022':'https://www.youtube.com/embed/dUMeKMDAlkA',
+  'Made in Abyss':'https://www.youtube.com/embed/YRF_GYb_b1c',
+  'Erased':'https://www.youtube.com/embed/XnFKOHCJT6E',
+  'Parasyte':'https://www.youtube.com/embed/M9xTvBYO0EI',
+  'The Promised Neverland':'https://www.youtube.com/embed/ALQj5KW6x84',
+  'Death Note':'https://www.youtube.com/embed/NlJZ7sS6a2k',
+  'Psycho-Pass':'https://www.youtube.com/embed/K4IWxFBVMaQ',
+  'Odd Taxi':'https://www.youtube.com/embed/5R0n7WfIkMo',
+  'Link Click':'https://www.youtube.com/embed/zYjE0cHDkv4',
+  'Cowboy Bebop':'https://www.youtube.com/embed/qig4KOK2R2g',
+  'Neon Genesis Evangelion':'https://www.youtube.com/embed/4GDIW_F4WCo',
+  'Steins Gate':'https://www.youtube.com/embed/27OZc-ku6is',
+  'No Game No Life':'https://www.youtube.com/embed/B1HNzdFsRdE',
+  'Re:Zero':'https://www.youtube.com/embed/VehkGRz_aps',
+  'Mushoku Tensei':'https://www.youtube.com/embed/dAF4OrgTrMM',
+  'KonoSuba':'https://www.youtube.com/embed/tAZ5-MmvNkA',
+  'Overlord':'https://www.youtube.com/embed/wLBR6f9TgOo',
+  'That Time I Got Reincarnated as a Slime':'https://www.youtube.com/embed/9Q5UiJvHJeo',
+  'Dr Stone':'https://www.youtube.com/embed/Sav9qUBBbYc',
+  'Fire Force':'https://www.youtube.com/embed/KSyiMkbN7OY',
+  'Black Clover':'https://www.youtube.com/embed/i7KmNVrxm0w',
+  'Tokyo Ghoul':'https://www.youtube.com/embed/QnOAl0IbYkc',
+  'Attack on Titan':'https://www.youtube.com/embed/MGRm4IzK1SQ',
+  'Sword Art Online':'https://www.youtube.com/embed/6ohYYtxfDCg',
+  'Fairy Tail':'https://www.youtube.com/embed/Ll6r2EEWVS4',
+  'A Place Further than the Universe':'https://www.youtube.com/embed/1TxEGSFvJRQ',
+  'Yuru Camp':'https://www.youtube.com/embed/UPJ12XLDfmU',
+  'K-On':'https://www.youtube.com/embed/yTbkLTXrNhU',
+  'March Comes in Like a Lion':'https://www.youtube.com/embed/CtbKBBXuSBY',
+  'Sound Euphonium':'https://www.youtube.com/embed/5N7x2V8jNqE',
+  'Angel Beats':'https://www.youtube.com/embed/9jE7GlJcQz8',
+  'Anohana':'https://www.youtube.com/embed/P1gPEFSwL-s',
+  'Dorohedoro':'https://www.youtube.com/embed/qn3mFj1VbCc',
+  'Devilman Crybaby':'https://www.youtube.com/embed/siRfBNWJLTU',
+  'Inuyasha':'https://www.youtube.com/embed/MbHQbFkbILQ',
+  'Assassination Classroom':'https://www.youtube.com/embed/J6wLr0e0wjk',
+  'Gintama':'https://www.youtube.com/embed/aqBsQJhPiGg',
+  'Berserk 1997':'https://www.youtube.com/embed/6axZWP2gNrc',
+  'Puella Magi Madoka Magica':'https://www.youtube.com/embed/UEKMlAuEXHg',
+  'Komi Can\'t Communicate':'https://www.youtube.com/embed/OBVcOQnNUPo',
+  'My Dress-Up Darling':'https://www.youtube.com/embed/MOSGxrJUEFE',
+  'Darling in the FranXX':'https://www.youtube.com/embed/K9w2PMrPYAc',
+  'SSSS Gridman':'https://www.youtube.com/embed/jPEQKiLdG5E',
+  'Aldnoah Zero':'https://www.youtube.com/embed/IYvLEEcN-vc',
+  'Promare':'https://www.youtube.com/embed/N5cJDMkCHqQ',
+  'Dororo':'https://www.youtube.com/embed/HJK9Nl0RFKM',
+  'Summertime Render':'https://www.youtube.com/embed/7jTIKIhqJas',
+  'Bungou Stray Dogs':'https://www.youtube.com/embed/MH8PONkz8ME',
+  'Akudama Drive':'https://www.youtube.com/embed/MSTnCKrBT-A',
+  '86':'https://www.youtube.com/embed/WNQZIRxXqt4',
+  'Vivy Fluorite Eyes Song':'https://www.youtube.com/embed/n3PJrMJ8fAU',
+  'Goblin Slayer':'https://www.youtube.com/embed/EqIExqCQiHQ',
+  'The Apothecary Diaries':'https://www.youtube.com/embed/cL2p5sXfCwA',
+  'Moriarty the Patriot':'https://www.youtube.com/embed/_GkmJOTVIlA',
+  'Talentless Nana':'https://www.youtube.com/embed/RCKMlSfpBNg',
+  'Odd Taxi':'https://www.youtube.com/embed/5R0n7WfIkMo',
+  'ID Invaded':'https://www.youtube.com/embed/9TegEZ5S2nQ',
+  'Kaiji':'https://www.youtube.com/embed/B-VZ5-tpKPw'
+};
+
+// Real MAL ratings map
+var REAL_RATINGS={
+  'Attack on Titan':'9.08','Demon Slayer':'8.60','Fullmetal Alchemist: Brotherhood':'9.08',
+  'Death Note':'8.62','Your Lie in April':'8.66','Steins;Gate':'9.08',
+  'One Punch Man':'8.69','Haikyuu!!':'8.72','Hunter x Hunter':'9.04',
+  'Spy x Family':'8.12','Naruto':'7.97','Naruto Shippuden':'8.14',
+  'Bleach':'7.92','Bleach TYBW':'9.00','One Piece':'8.74',
+  'Dragon Ball Z':'8.15','Dragon Ball Super':'7.64','My Hero Academia':'7.89',
+  'Jujutsu Kaisen':'8.62','Chainsaw Man':'8.62','Mob Psycho 100':'8.52',
+  'Vinland Saga':'8.75','Cowboy Bebop':'8.75','Neon Genesis Evangelion':'8.35',
+  'Ghost in the Shell':'8.27','Akira':'8.14','Code Geass':'8.73',
+  'Gurren Lagann':'8.63','Fullmetal Alchemist Brotherhood':'9.08',
+  'Clannad After Story':'8.96','Anohana':'8.45','Violet Evergarden':'8.37',
+  'Your Name':'8.85','A Silent Voice':'8.94','Spirited Away':'8.78',
+  'Princess Mononoke':'8.70','Howls Moving Castle':'8.67','Weathering with You':'8.45',
+  'Toradora':'8.23','Fruits Basket':'8.09','Kaguya-sama Love is War':'8.40',
+  'Horimiya':'8.18','My Dress-Up Darling':'8.37','Banana Fish':'8.70',
+  'Given':'8.04','Yuri on Ice':'7.87','Nisekoi':'7.73',
+  'Re:Zero':'8.25','No Game No Life':'8.15','Overlord':'7.91',
+  'KonoSuba':'8.15','That Time I Got Reincarnated as a Slime':'8.10',
+  'Mushoku Tensei':'8.30','Sword Art Online':'7.21','Fairy Tail':'7.62',
+  'Black Clover':'7.93','Seven Deadly Sins':'7.73','Tokyo Revengers':'7.84',
+  'Frieren Beyond Journey End':'9.33','Dungeon Meshi':'8.72',
+  'The Apothecary Diaries':'8.69','Bocchi the Rock':'8.89',
+  'Blue Lock':'8.32','Lycoris Recoil':'8.07','Cyberpunk Edgerunners':'8.60',
+  'Oshi no Ko':'8.63','Made in Abyss':'8.65','Erased':'8.64',
+  'Parasyte':'8.36','The Promised Neverland':'8.36','Odd Taxi':'8.64',
+  'Link Click':'8.62','Ping Pong the Animation':'8.65','A Place Further than the Universe':'8.72',
+  'Yuru Camp':'8.26','K-On':'8.11','March Comes in Like a Lion':'8.50',
+  'Sound Euphonium':'8.47','Hyouka':'8.18','Barakamon':'8.34',
+  'Angel Beats':'7.87','Charlotte':'7.79','Plastic Memories':'7.41',
+  'Gintama':'9.05','Assassination Classroom':'8.11','Dr Stone':'8.27',
+  'Fire Force':'7.97','Goblin Slayer':'7.43','Devilman Crybaby':'7.74',
+  'Dorohedoro':'8.27','Dororo':'8.13','Bungou Stray Dogs':'7.97',
+  'Psycho-Pass':'8.38','Terror in Resonance':'8.00','Summertime Render':'8.63',
+  'Inuyasha':'7.80','Tokyo Ghoul':'7.91','Sword Art Online Alicization':'7.81',
+  'Puella Magi Madoka Magica':'8.36','SSSS Gridman':'7.96','Aldnoah Zero':'7.56',
+  'Darling in the FranXX':'7.27','86':'8.46','Vivy Fluorite Eyes Song':'8.27',
+  'Komi Can\'t Communicate':'7.90','Rent-a-Girlfriend':'7.32',
+  'Domestic Girlfriend':'7.11','Orange':'8.01','Banana Fish':'8.70',
+  'Natsumes Book of Friends':'8.59','Mushishi':'8.73','Spice and Wolf':'8.25',
+  'Run with the Wind':'8.73','Welcome to the Ballroom':'7.60','Slam Dunk':'8.57',
+  'Hajime no Ippo':'8.80','Kuroko Basketball':'8.19','Megalo Box':'8.05',
+  'Moriarty the Patriot':'7.97','ID Invaded':'8.14','Talentless Nana':'7.77',
+  'Akudama Drive':'7.99','Black Lagoon':'8.07','Darker than Black':'8.13',
+  'Great Teacher Onizuka':'8.75','Golden Boy':'7.91','Promare':'7.94',
+  'Puella Magi Madoka Magica Rebellion':'7.94','Little Witch Academia':'8.01',
+  'Nichijou':'8.47','Non Non Biyori':'8.25','Silver Spoon':'8.53',
+  'Shirobako':'8.61','Usagi Drop':'8.43','The Tatami Galaxy':'8.57',
+  'Kaiji':'8.40','Berserk 1997':'8.63'
+};
+
+// Real MAL character image URLs
+// Format: https://cdn.myanimelist.net/images/characters/{folder}/{id}.jpg
+var CHAR_IMG={
+  // Attack on Titan
+  'Eren Yeager':'https://cdn.myanimelist.net/images/characters/10/216895.jpg',
+  'Mikasa Ackerman':'https://cdn.myanimelist.net/images/characters/9/215563.jpg',
+  'Armin Arlert':'https://cdn.myanimelist.net/images/characters/11/216899.jpg',
+  'Levi Ackerman':'https://cdn.myanimelist.net/images/characters/2/241413.jpg',
+  'Erwin Smith':'https://cdn.myanimelist.net/images/characters/15/267691.jpg',
+  // Demon Slayer
+  'Tanjiro Kamado':'https://cdn.myanimelist.net/images/characters/7/390417.jpg',
+  'Nezuko Kamado':'https://cdn.myanimelist.net/images/characters/4/390418.jpg',
+  'Zenitsu Agatsuma':'https://cdn.myanimelist.net/images/characters/11/390421.jpg',
+  'Inosuke Hashibira':'https://cdn.myanimelist.net/images/characters/10/390420.jpg',
+  'Giyu Tomioka':'https://cdn.myanimelist.net/images/characters/9/390419.jpg',
+  // FMA Brotherhood
+  'Edward Elric':'https://cdn.myanimelist.net/images/characters/6/55554.jpg',
+  'Alphonse Elric':'https://cdn.myanimelist.net/images/characters/7/55555.jpg',
+  'Roy Mustang':'https://cdn.myanimelist.net/images/characters/7/55557.jpg',
+  'Father':'https://cdn.myanimelist.net/images/characters/9/74696.jpg',
+  // Death Note
+  'Light Yagami':'https://cdn.myanimelist.net/images/characters/3/250000.jpg',
+  'L Lawliet':'https://cdn.myanimelist.net/images/characters/10/250001.jpg',
+  'Ryuk':'https://cdn.myanimelist.net/images/characters/11/250002.jpg',
+  'Misa Amane':'https://cdn.myanimelist.net/images/characters/5/250003.jpg',
+  // Your Lie in April
+  'Kousei Arima':'https://cdn.myanimelist.net/images/characters/6/248840.jpg',
+  'Kaori Miyazono':'https://cdn.myanimelist.net/images/characters/3/248841.jpg',
+  // Steins Gate
+  'Rintaro Okabe':'https://cdn.myanimelist.net/images/characters/7/114233.jpg',
+  'Kurisu Makise':'https://cdn.myanimelist.net/images/characters/4/114232.jpg',
+  'Mayuri Shiina':'https://cdn.myanimelist.net/images/characters/14/114235.jpg',
+  // One Punch Man
+  'Saitama':'https://cdn.myanimelist.net/images/characters/2/295059.jpg',
+  'Genos':'https://cdn.myanimelist.net/images/characters/3/295060.jpg',
+  'Tatsumaki':'https://cdn.myanimelist.net/images/characters/12/295063.jpg',
+  // Haikyuu
+  'Shoyo Hinata':'https://cdn.myanimelist.net/images/characters/3/229486.jpg',
+  'Tobio Kageyama':'https://cdn.myanimelist.net/images/characters/10/229487.jpg',
+  'Kei Tsukishima':'https://cdn.myanimelist.net/images/characters/11/229492.jpg',
+  // Hunter x Hunter
+  'Gon Freecss':'https://cdn.myanimelist.net/images/characters/11/44231.jpg',
+  'Killua Zoldyck':'https://cdn.myanimelist.net/images/characters/7/44233.jpg',
+  'Hisoka':'https://cdn.myanimelist.net/images/characters/6/44234.jpg',
+  // Spy x Family
+  'Loid Forger':'https://cdn.myanimelist.net/images/characters/3/516528.jpg',
+  'Anya Forger':'https://cdn.myanimelist.net/images/characters/8/516529.jpg',
+  'Yor Forger':'https://cdn.myanimelist.net/images/characters/7/516530.jpg',
+  // Naruto
+  'Naruto Uzumaki':'https://cdn.myanimelist.net/images/characters/2/284121.jpg',
+  'Sasuke Uchiha':'https://cdn.myanimelist.net/images/characters/9/131317.jpg',
+  'Sakura Haruno':'https://cdn.myanimelist.net/images/characters/3/131318.jpg',
+  // Bleach
+  'Ichigo Kurosaki':'https://cdn.myanimelist.net/images/characters/3/40451.jpg',
+  'Rukia Kuchiki':'https://cdn.myanimelist.net/images/characters/10/75485.jpg',
+  // My Hero Academia
+  'Izuku Midoriya':'https://cdn.myanimelist.net/images/characters/5/321829.jpg',
+  'Katsuki Bakugo':'https://cdn.myanimelist.net/images/characters/3/321832.jpg',
+  'Shoto Todoroki':'https://cdn.myanimelist.net/images/characters/12/321830.jpg',
+  'All Might':'https://cdn.myanimelist.net/images/characters/8/321828.jpg',
+  // Jujutsu Kaisen
+  'Yuji Itadori':'https://cdn.myanimelist.net/images/characters/2/494103.jpg',
+  'Megumi Fushiguro':'https://cdn.myanimelist.net/images/characters/4/494104.jpg',
+  'Nobara Kugisaki':'https://cdn.myanimelist.net/images/characters/9/494105.jpg',
+  'Satoru Gojo':'https://cdn.myanimelist.net/images/characters/3/494102.jpg',
+  // Chainsaw Man
+  'Denji':'https://cdn.myanimelist.net/images/characters/9/520005.jpg',
+  'Makima':'https://cdn.myanimelist.net/images/characters/6/520004.jpg',
+  'Power':'https://cdn.myanimelist.net/images/characters/12/520006.jpg',
+  'Aki Hayakawa':'https://cdn.myanimelist.net/images/characters/13/520007.jpg',
+  // Re:Zero
+  'Subaru Natsuki':'https://cdn.myanimelist.net/images/characters/3/314514.jpg',
+  'Emilia':'https://cdn.myanimelist.net/images/characters/12/314511.jpg',
+  'Rem':'https://cdn.myanimelist.net/images/characters/11/314518.jpg',
+  // Sword Art Online
+  'Kirito':'https://cdn.myanimelist.net/images/characters/9/211030.jpg',
+  'Asuna':'https://cdn.myanimelist.net/images/characters/3/211029.jpg',
+  // Kaguya-sama
+  'Kaguya Shinomiya':'https://cdn.myanimelist.net/images/characters/6/355572.jpg',
+  'Miyuki Shirogane':'https://cdn.myanimelist.net/images/characters/5/355571.jpg',
+  'Chika Fujiwara':'https://cdn.myanimelist.net/images/characters/4/355573.jpg',
+  // Frieren
+  'Frieren':'https://cdn.myanimelist.net/images/characters/3/576272.jpg',
+  'Fern':'https://cdn.myanimelist.net/images/characters/8/576273.jpg',
+  'Stark':'https://cdn.myanimelist.net/images/characters/11/576274.jpg',
+  // Dungeon Meshi
+  'Laios Touden':'https://cdn.myanimelist.net/images/characters/3/577951.jpg',
+  'Marcille Donato':'https://cdn.myanimelist.net/images/characters/11/577952.jpg',
+  'Chilchuck':'https://cdn.myanimelist.net/images/characters/7/577953.jpg',
+  // Bocchi the Rock
+  'Hitori Gotoh':'https://cdn.myanimelist.net/images/characters/8/536791.jpg',
+  'Nijika Ijichi':'https://cdn.myanimelist.net/images/characters/4/536793.jpg',
+  'Ryo Yamada':'https://cdn.myanimelist.net/images/characters/12/536792.jpg',
+  // Vinland Saga
+  'Thorfinn':'https://cdn.myanimelist.net/images/characters/3/401897.jpg',
+  'Askeladd':'https://cdn.myanimelist.net/images/characters/11/401898.jpg',
+  // Mob Psycho 100
+  'Shigeo Kageyama':'https://cdn.myanimelist.net/images/characters/13/290287.jpg',
+  'Reigen Arataka':'https://cdn.myanimelist.net/images/characters/8/290288.jpg',
+  // Toradora
+  'Ryuuji Takasu':'https://cdn.myanimelist.net/images/characters/11/78093.jpg',
+  'Taiga Aisaka':'https://cdn.myanimelist.net/images/characters/3/78092.jpg',
+  // Made in Abyss
+  'Riko':'https://cdn.myanimelist.net/images/characters/6/310516.jpg',
+  'Reg':'https://cdn.myanimelist.net/images/characters/4/310515.jpg',
+  'Nanachi':'https://cdn.myanimelist.net/images/characters/5/310517.jpg',
+  // Violet Evergarden
+  'Violet Evergarden':'https://cdn.myanimelist.net/images/characters/3/345571.jpg',
+  // Code Geass
+  'Lelouch Lamperouge':'https://cdn.myanimelist.net/images/characters/8/76063.jpg',
+  'C.C.':'https://cdn.myanimelist.net/images/characters/6/76065.jpg',
+  'Suzaku Kururugi':'https://cdn.myanimelist.net/images/characters/11/76064.jpg',
+  // Gurren Lagann
+  'Simon':'https://cdn.myanimelist.net/images/characters/2/16513.jpg',
+  'Kamina':'https://cdn.myanimelist.net/images/characters/12/16514.jpg',
+  'Yoko Littner':'https://cdn.myanimelist.net/images/characters/9/16515.jpg',
+  // Cowboy Bebop
+  'Spike Spiegel':'https://cdn.myanimelist.net/images/characters/4/50197.jpg',
+  'Faye Valentine':'https://cdn.myanimelist.net/images/characters/12/50199.jpg',
+  'Jet Black':'https://cdn.myanimelist.net/images/characters/10/50198.jpg',
+  // Fruits Basket
+  'Tohru Honda':'https://cdn.myanimelist.net/images/characters/6/404455.jpg',
+  'Kyo Sohma':'https://cdn.myanimelist.net/images/characters/10/404456.jpg',
+  'Yuki Sohma':'https://cdn.myanimelist.net/images/characters/3/404457.jpg',
+  // Haikyuu (additional)
+  'Ryuu Tanaka':'https://cdn.myanimelist.net/images/characters/7/229490.jpg',
+  'Koushi Sugawara':'https://cdn.myanimelist.net/images/characters/6/229489.jpg',
+  // Cyberpunk Edgerunners
+  'David Martinez':'https://cdn.myanimelist.net/images/characters/5/521601.jpg',
+  'Lucy':'https://cdn.myanimelist.net/images/characters/9/521602.jpg',
+  // Blue Lock
+  'Yoichi Isagi':'https://cdn.myanimelist.net/images/characters/3/536862.jpg',
+  'Seishiro Nagi':'https://cdn.myanimelist.net/images/characters/11/536863.jpg',
+  // Oshi no Ko
+  'Aqua Hoshino':'https://cdn.myanimelist.net/images/characters/6/570217.jpg',
+  'Ruby Hoshino':'https://cdn.myanimelist.net/images/characters/10/570218.jpg',
+  'Ai':'https://cdn.myanimelist.net/images/characters/4/570216.jpg',
+  // Apothecary Diaries
+  'Maomao':'https://cdn.myanimelist.net/images/characters/7/579013.jpg',
+  'Jinshi':'https://cdn.myanimelist.net/images/characters/11/579014.jpg',
+  // Horimiya
+  'Kyouko Hori':'https://cdn.myanimelist.net/images/characters/6/449873.jpg',
+  'Izumi Miyamura':'https://cdn.myanimelist.net/images/characters/4/449872.jpg',
+  // My Dress-Up Darling
+  'Wakana Gojo':'https://cdn.myanimelist.net/images/characters/9/507869.jpg',
+  'Marin Kitagawa':'https://cdn.myanimelist.net/images/characters/5/507868.jpg',
+  // Mushoku Tensei
+  'Rudeus Greyrat':'https://cdn.myanimelist.net/images/characters/2/460560.jpg',
+  'Sylphiette':'https://cdn.myanimelist.net/images/characters/8/460562.jpg',
+  // That Time I Got Reincarnated as a Slime
+  'Rimuru Tempest':'https://cdn.myanimelist.net/images/characters/4/381432.jpg',
+  // Black Clover
+  'Asta':'https://cdn.myanimelist.net/images/characters/3/341446.jpg',
+  'Yuno':'https://cdn.myanimelist.net/images/characters/10/341447.jpg',
+  // Overlord
+  'Ainz Ooal Gown':'https://cdn.myanimelist.net/images/characters/7/279731.jpg',
+  'Albedo':'https://cdn.myanimelist.net/images/characters/4/279730.jpg',
+  // KonoSuba
+  'Kazuma Satou':'https://cdn.myanimelist.net/images/characters/12/310302.jpg',
+  'Aqua':'https://cdn.myanimelist.net/images/characters/6/310301.jpg',
+  'Megumin':'https://cdn.myanimelist.net/images/characters/3/310303.jpg',
+  // Evangelion
+  'Shinji Ikari':'https://cdn.myanimelist.net/images/characters/8/284478.jpg',
+  'Rei Ayanami':'https://cdn.myanimelist.net/images/characters/4/284480.jpg',
+  'Asuka Langley':'https://cdn.myanimelist.net/images/characters/11/284479.jpg',
+  // Erased
+  'Satoru Fujinuma':'https://cdn.myanimelist.net/images/characters/10/291927.jpg',
+  'Kayo Hinazuki':'https://cdn.myanimelist.net/images/characters/3/291929.jpg',
+  // Your Name
+  'Taki Tachibana':'https://cdn.myanimelist.net/images/characters/6/311995.jpg',
+  'Mitsuha Miyamizu':'https://cdn.myanimelist.net/images/characters/4/311994.jpg',
+  // A Silent Voice
+  'Shoya Ishida':'https://cdn.myanimelist.net/images/characters/9/349232.jpg',
+  'Shoko Nishimiya':'https://cdn.myanimelist.net/images/characters/8/349231.jpg',
+  // Psycho-Pass
+  'Akane Tsunemori':'https://cdn.myanimelist.net/images/characters/3/199382.jpg',
+  'Shinya Kogami':'https://cdn.myanimelist.net/images/characters/4/199383.jpg',
+  // Clannad
+  'Tomoya Okazaki':'https://cdn.myanimelist.net/images/characters/4/77257.jpg',
+  'Nagisa Furukawa':'https://cdn.myanimelist.net/images/characters/5/77258.jpg',
+  // Tokyo Ghoul
+  'Kaneki Ken':'https://cdn.myanimelist.net/images/characters/9/257316.jpg',
+  'Touka Kirishima':'https://cdn.myanimelist.net/images/characters/7/257318.jpg',
+  // Dorohedoro
+  'Caiman':'https://cdn.myanimelist.net/images/characters/12/424403.jpg',
+  'Nikaido':'https://cdn.myanimelist.net/images/characters/4/424404.jpg',
+  // Oddtaxi
+  'Odokawa':'https://cdn.myanimelist.net/images/characters/5/463785.jpg',
+  // Bungou Stray Dogs
+  'Atsushi Nakajima':'https://cdn.myanimelist.net/images/characters/4/322698.jpg',
+  'Osamu Dazai':'https://cdn.myanimelist.net/images/characters/9/322699.jpg',
+  // Parasyte
+  'Shinichi Izumi':'https://cdn.myanimelist.net/images/characters/3/273348.jpg',
+  'Migi':'https://cdn.myanimelist.net/images/characters/11/273349.jpg',
+  // The Promised Neverland
+  'Emma':'https://cdn.myanimelist.net/images/characters/7/367604.jpg',
+  'Norman':'https://cdn.myanimelist.net/images/characters/11/367605.jpg',
+  'Ray':'https://cdn.myanimelist.net/images/characters/8/367606.jpg',
+  // Dragon Ball Z
+  'Goku':'https://cdn.myanimelist.net/images/characters/3/206134.jpg',
+  'Vegeta':'https://cdn.myanimelist.net/images/characters/11/206135.jpg',
+  // Inuyasha
+  'Inuyasha':'https://cdn.myanimelist.net/images/characters/5/42905.jpg',
+  'Kagome Higurashi':'https://cdn.myanimelist.net/images/characters/3/42906.jpg'
+};
 var GENERATED=[];
 GENRES.forEach(function(g){
   var titles=TBG[g]||[];
   var em=EMOJIS[g];var co=COLORS[g];var th=TM[g];
   titles.forEach(function(title,i){
     var yr=1990+Math.floor(Math.random()*35);
-    var rat=(7.0+Math.random()*2.3).toFixed(1);
+    var rat=REAL_RATINGS[title]||(7.0+Math.random()*2.3).toFixed(1);
     var ep=Math.random()<0.15?'Movie':(Math.floor(Math.random()*200+1))+' eps';
     var st=STUDIOS[Math.floor(Math.random()*STUDIOS.length)];
     var emoji=em[i%em.length];
@@ -980,7 +1410,7 @@ GENRES.forEach(function(g){
       views:Math.floor(Math.random()*10000000+100000),
       short:'A '+g.toLowerCase()+' anime about '+tT[0].toLowerCase()+'.',
       desc:title+' is a '+yr+' '+g.toLowerCase()+' anime by '+st+'. Themes: '+tT.join(', ')+'.',
-      themes:tT,trailer:null,platforms:plat,
+      themes:tT,trailer:TRAILER_MAP[title]||null,platforms:plat,
       cast:genCast(title,g,emoji,em,i,tT)
     });
   });
@@ -2151,7 +2581,7 @@ function openCharPage(animeId, charIndex){
   if(!c)return;
 
   // Generate portrait
-  var portrait=charPortrait(c,a.color,280,360);
+  var portrait=CHAR_IMG[c.name]||charPortrait(c,a.color,280,360);
 
   // Extra character content based on type
   var abilities=[];
@@ -2286,11 +2716,11 @@ function openDetail(id){
 
   // Character cards — clickable for full char page
   var castH=(a.cast||[]).map(function(c,idx){
-    var portrait=charPortrait(c,a.color,165,200);
+    var portrait=CHAR_IMG[c.name]||charPortrait(c,a.color,165,200);
     var badgeStyle=c.type==='main'?'background:rgba(108,99,255,.22);color:var(--pl);':'background:rgba(255,107,157,.2);color:var(--pink);';
     return ['<div class="char-card" onclick="openCharPage(',id,',',idx,')">',
       '<div class="char-img">',
-        '<img src="',portrait,'" alt="',c.name,'" loading="lazy"/>',
+        '<img src="',portrait,'" alt="',c.name,'" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top;" onerror="this.src=\''+charPortrait(c,a.color,165,200)+'\'" />',
         '<div class="char-type-badge" style="',badgeStyle,'">',c.type==='main'?'★ MAIN':'◆ SUP','</div>',
       '</div>',
       '<div class="char-body">',
@@ -2311,8 +2741,9 @@ function openDetail(id){
   var trailerH;
   if(a.trailer){
     var trUrl=a.trailer;
-    var iframeCode='<iframe src="'+trUrl+'?autoplay=1" allow="autoplay;encrypted-media;fullscreen" allowfullscreen></iframe>';
-    trailerH='<div class="trailer-wrap"><div class="trailer-ph" onclick="this.parentElement.innerHTML=\''+iframeCode.replace(/'/g,"\\'")+'\'"><div class="play-ring">▶</div><div class="play-lbl">Watch Official Trailer</div><div class="play-sub">Click to load YouTube</div></div></div>';
+    var trId='tr_'+a.id;
+    TRAILER_URLS[trId]=trUrl;
+    trailerH='<div class="trailer-wrap" id="'+trId+'_wrap"><div class="trailer-ph" id="'+trId+'" onclick="playTrailer(\''+trId+'\')"><div class="play-ring">▶</div><div class="play-lbl">Watch Official Trailer</div><div class="play-sub">Click to load YouTube</div></div></div>';
   } else {
     trailerH='<div style="padding:13px 16px;background:var(--card);border-radius:11px;border:1px solid var(--border);color:var(--t3);font-size:12px;">Trailer not available yet.</div>';
   }
@@ -2332,12 +2763,10 @@ function openDetail(id){
 
   document.getElementById('detailMount').innerHTML=[
     '<div class="det-topbar">',
-      '<button class="det-back-btn" onclick="goPage(\'browse\')">',
-        '<span class="det-back-arrow">←</span> Back to Browse',
-      '</button>',
-      '<div style="display:flex;align-items:center;gap:8px;">',
+      '<button class="det-back-btn" onclick="goPage(\'browse\')">← Back to Browse</button>',
+      '<div class="det-topbar-right">',
+        '<span class="det-topbar-title">',a.title,'</span>',
         wlBtn(a.id),
-        '<span style="font-size:12px;color:var(--t2);font-weight:600;">',a.title,'</span>',
       '</div>',
     '</div>',
     '<div class="det-hero">',
@@ -2450,6 +2879,17 @@ function showStatus(msg,type){
   var c={success:{bg:'rgba(34,197,94,.12)',bdr:'rgba(34,197,94,.3)',col:'#22c55e'},error:{bg:'rgba(239,68,68,.1)',bdr:'rgba(239,68,68,.3)',col:'#ef4444'},info:{bg:'rgba(108,99,255,.1)',bdr:'rgba(108,99,255,.3)',col:'var(--pl)'}}[type]||{};
   el.style.cssText='display:block;padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700;margin-bottom:12px;background:'+c.bg+';border:1px solid '+c.bdr+';color:'+c.col+';';
   el.textContent=msg;
+}
+
+// ================================================================
+// TRAILER PLAYER
+// ================================================================
+var TRAILER_URLS={};
+function playTrailer(trId){
+  var wrap=document.getElementById(trId+'_wrap');
+  var url=TRAILER_URLS[trId];
+  if(!wrap||!url)return;
+  wrap.innerHTML='<iframe src="'+url+'?autoplay=1" allow="autoplay;encrypted-media;fullscreen" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;display:block;"></iframe>';
 }
 
 // ================================================================
